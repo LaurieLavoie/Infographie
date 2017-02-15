@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofxGui.h"
 
 class ofApp : public ofBaseApp{
 
@@ -20,5 +21,17 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+
+		ofxPanel gui;
+		ofxIntSlider posX;
+		ofxIntSlider posY;
+		ofxIntSlider radius;
+
+		ofxIntSlider hue;
+		ofxIntSlider saturation;
+		ofxIntSlider brightness;
+
+		//ofxToggle toggle;
+		//ofxButton button;
 		
 };
