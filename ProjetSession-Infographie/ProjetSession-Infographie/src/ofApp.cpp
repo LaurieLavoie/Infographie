@@ -1,71 +1,46 @@
+
 #include "ofApp.h"
 
-//--------------------------------------------------------------
-void ofApp::setup(){
 
+ofApp::ofApp()
+{
+	renderer = nullptr;
 }
 
-//--------------------------------------------------------------
-void ofApp::update(){
+void ofApp::setup()
+{
+	ofSetWindowTitle("Projet session");
 
+	renderer = new Renderer();
+	renderer->setup();
 }
 
-//--------------------------------------------------------------
-void ofApp::draw(){
-
+void ofApp::draw()
+{
+	renderer->draw();
 }
 
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key){
+void ofApp::keyReleased(int key)
+{
+	ofLog() << "<app::keyReleased: " << key << ">";
 
+	// valider si la clé relâchée est la barre d'espacement (space)
+	if (key == ' ')
+		renderer->imageExport("render", "png");
 }
 
-//--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-
+void ofApp::windowResized(int w, int h)
+{
+	ofLog() << "<app::windowResized to: (" << w << ", " << h << ")>";
 }
 
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
+void ofApp::exit()
+{
+	ofLog() << "<app::exit>";
 }
 
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
+ofApp::~ofApp()
+{
+	if (nullptr != renderer)
+		delete renderer;
 }
