@@ -19,6 +19,7 @@ void ofApp::setup()
 	gui.add(brightness.setup("brightness", 0, 0, 255));
 
 	gui.add(importButton.setup("import"));
+	importButton.addListener(this, &ofApp::importListener);
 	gui.add(exportButton.setup("export"));
 	exportButton.addListener(this, &ofApp::exportListener);
 
@@ -28,6 +29,17 @@ void ofApp::setup()
 
 void ofApp::exportListener() {
 	renderer->imageExport("test", "jpg");
+}
+
+void ofApp::importListener() {
+	ofFileDialogResult result = ofSystemLoadDialog("Load file");
+	if (result.bSuccess) {
+		string path = result.getPath();
+		if (path.find(".jpg") != std::string::npos || path.find(".png") != std::string::npos)
+		{
+			renderer->imageImport(path);
+		}
+	}
 }
 
 void ofApp::draw()

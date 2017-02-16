@@ -12,7 +12,7 @@ public:
 	Renderer();
 	ofImage image;
 	void imageExport(const string name, const string extension) const;
-	void imageImport();
+	void imageImport(string path);
 	void setup();
 	void draw();
 

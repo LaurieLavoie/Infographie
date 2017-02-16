@@ -38,8 +38,8 @@ void Renderer::imageExport(const string name, const string extension) const
 	imageTemp.save(fileName);
 }
 
-void Renderer::imageImport() {
-	int imageWidth;
+void Renderer::imageImport(string path) {
+	/*int imageWidth;
 	int imageHeight;
 	int imageComponent;
 	int imagePixelCount;
@@ -65,7 +65,9 @@ void Renderer::imageImport() {
 
 	glGenerateMipmap(GL_TEXTURE_2D);
 
-	free(pixels);
+	free(pixels);*/
+	image.load(path);
+	ofSetWindowShape(image.getWidth(), image.getHeight());
 }
 
 Renderer::~Renderer()

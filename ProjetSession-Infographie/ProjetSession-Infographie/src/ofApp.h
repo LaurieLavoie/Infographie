@@ -18,7 +18,7 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 
 		void exportListener();
-
+		void importListener();
 
 		ofxPanel gui;
 		ofxIntSlider posX;
