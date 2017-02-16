@@ -18,8 +18,16 @@ void ofApp::setup()
 	gui.add(saturation.setup("saturation", 0, 0, 255));
 	gui.add(brightness.setup("brightness", 0, 0, 255));
 
+	gui.add(importButton.setup("import"));
+	gui.add(exportButton.setup("export"));
+	exportButton.addListener(this, &ofApp::exportListener);
+
 	renderer = new Renderer();
 	renderer->setup();
+}
+
+void ofApp::exportListener() {
+	renderer->imageExport("test", "jpg");
 }
 
 void ofApp::draw()

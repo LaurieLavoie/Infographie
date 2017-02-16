@@ -17,6 +17,8 @@ class ofApp : public ofBaseApp{
 		void keyReleased(int key);
 		void windowResized(int w, int h);
 
+		void exportListener();
+
 
 		ofxPanel gui;
 		ofxIntSlider posX;
@@ -27,8 +29,8 @@ class ofApp : public ofBaseApp{
 		ofxIntSlider saturation;
 		ofxIntSlider brightness;
 
-		//ofxToggle toggle;
-		//ofxButton button;
+		ofxButton importButton;
+		ofxButton exportButton;
 
 		~ofApp();
 		
