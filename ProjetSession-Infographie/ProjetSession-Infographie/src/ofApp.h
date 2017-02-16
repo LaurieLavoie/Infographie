@@ -1,8 +1,12 @@
 #pragma once
 
+#include <memory>
+
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "Renderer.h"
+
+#include "Scene.h"
 
 class ofApp : public ofBaseApp{
 
@@ -33,5 +37,8 @@ class ofApp : public ofBaseApp{
 		ofxButton exportButton;
 
 		~ofApp();
+
+	private:
+		std::unique_ptr<Scene> scene;
 		
 };
