@@ -10,9 +10,12 @@ class Renderer
 public:
 
 	Renderer();
+	ofImage image;
 	void imageExport(const string name, const string extension) const;
+	void imageImport();
 	void setup();
 	void draw();
+
 
 	~Renderer();
 };
