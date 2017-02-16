@@ -1,84 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\ofApp.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="src\main.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxBaseGui.cpp">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxButton.cpp">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxGuiGroup.cpp">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxLabel.cpp">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxPanel.cpp">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxSlider.cpp">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxSliderGroup.cpp">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxToggle.cpp">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClCompile>
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons">
-      <UniqueIdentifier>{31eb5797-c1ec-4145-abc2-f82d9a03b441}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxGui">
-      <UniqueIdentifier>{380d39d7-4f6d-4602-8628-0cde10fd9b3f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="addons\ofxGui\src">
-      <UniqueIdentifier>{f8bde759-2e05-412b-9bfe-2fc22ec46670}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="src\ofApp.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxBaseGui.h">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxButton.h">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxGui.h">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxGuiGroup.h">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxLabel.h">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxPanel.h">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxSlider.h">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxSliderGroup.h">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxToggle.h">
-      <Filter>addons\ofxGui\src</Filter>
-    </ClInclude>
+    <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="icon.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="addons">
+      <UniqueIdentifier>{def1554c-d967-4f9f-ba9e-e7a36b75f121}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

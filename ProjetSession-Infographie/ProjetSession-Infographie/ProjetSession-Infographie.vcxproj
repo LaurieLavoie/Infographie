@@ -96,8 +96,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <CompileAs>CompileAsCpp</CompileAs>
-      <AdditionalIncludeDirectories>
-C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -117,8 +116,7 @@ C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalInclud
       <WarningLevel>Level3</WarningLevel>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>
-C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -137,8 +135,7 @@ C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalInclud
       <WarningLevel>Level3</WarningLevel>
       <CompileAs>CompileAsCpp</CompileAs>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>
-C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -159,8 +156,7 @@ C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalInclud
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <CompileAs>CompileAsCpp</CompileAs>
-      <AdditionalIncludeDirectories>
-C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
@@ -175,28 +171,13 @@ C:\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src;%(AdditionalInclud
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxBaseGui.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxButton.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxGuiGroup.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxLabel.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxPanel.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxSlider.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxSliderGroup.cpp" />
-    <ClCompile Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxToggle.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\ofApp.cpp" />
+    <ClCompile Include="src\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxBaseGui.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxButton.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxGui.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxGuiGroup.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxLabel.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxPanel.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxSlider.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxSliderGroup.h" />
-    <ClInclude Include="..\..\..\..\..\..\..\..\..\Program Files (x86)\of_v0.9.8_vs_release\addons\ofxGui\src\ofxToggle.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

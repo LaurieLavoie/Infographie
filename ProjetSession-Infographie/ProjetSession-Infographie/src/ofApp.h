@@ -2,25 +2,21 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "Renderer.h"
 
 class ofApp : public ofBaseApp{
 
 	public:
-		void setup();
-		void update();
-		void draw();
+		Renderer * renderer;
+		ofApp();
 
-		void keyPressed(int key);
+		void setup();
+		void draw();
+		void exit();
+
 		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
 		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
+
 
 		ofxPanel gui;
 		ofxIntSlider posX;
@@ -33,5 +29,7 @@ class ofApp : public ofBaseApp{
 
 		//ofxToggle toggle;
 		//ofxButton button;
+
+		~ofApp();
 		
 };
