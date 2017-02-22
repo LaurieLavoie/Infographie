@@ -28,6 +28,7 @@ class ofApp : public ofBaseApp{
 		void circleListener();
 		void rectangleListener();
 		void lineListener();
+		void colorListener();
 		void exportListener();
 		void importListener();
 
