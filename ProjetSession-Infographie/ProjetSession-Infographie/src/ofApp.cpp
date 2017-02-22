@@ -183,6 +183,13 @@ void ofApp::mouseExited(int x, int y)
 	ofLog() << "<app::mouse exited   at: (" << x << ", " << y << ")>";
 }
 
+void ofApp::keyReleased(int key) {
+
+	if (key == 114) {	//key r
+		// History will be there one day
+	}
+}
+
 void ofApp::exit()
 {
 	ofLog() << "<app::exit>";

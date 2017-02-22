@@ -40,6 +40,7 @@ public:
 
 	VectorPrimitive drawMode;
 	StructVectorPrimitive * shape;
+	StructVectorPrimitive * historyShape;
 	int size;
 	int stride;
 	int head;
@@ -54,6 +55,9 @@ public:
 	void drawLine(float x1, float y1, float x2, float y2) const;
 	void drawRectangle(float x1, float y1, float x2, float y2) const;
 	void drawEllipse(float x1, float y1, float x2, float y2) const;
+
+	void addToHistory(float x1, float y1, float x2, float y2, unsigned char fillColorH, unsigned char fillColorS, unsigned char fillColorB);
+	void addToShape(float x1, float y1, float x2, float y2, unsigned char fillColorH, unsigned char fillColorS, unsigned char fillColorB);
 
 	bool isMouseButtonPressed;
 
