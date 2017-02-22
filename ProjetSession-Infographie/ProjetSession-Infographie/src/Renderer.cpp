@@ -38,6 +38,7 @@ void Renderer::draw()
 
 	if (isMouseButtonPressed)
 	{
+		drawCursor(xMouseCurrent, yMouseCurrent, 1);
 		ofSetColor(255);
 		ofSetLineWidth(3);
 		ofNoFill();
@@ -106,10 +107,9 @@ void Renderer::draw()
 	}
 
 	// afficher le curseur
-	ofSetLineWidth(2);
-	ofSetColor(32);
+	
 
-	drawCursor(xMouseCurrent, yMouseCurrent);
+	
 }
 
 
@@ -199,18 +199,46 @@ void Renderer::drawZone(float x1, float y1, float x2, float y2) const
 	float x2Clamp = min(max(0.0f, x2), (float)ofGetWidth());
 	float y2Clamp = min(max(0.0f, y2), (float)ofGetHeight());
 
-	ofDrawRectangle(x1, y1, x2Clamp - x1, y2Clamp - y1);
+	switch (drawMode)
+	{
+
+	case VectorPrimitive::LINE:
+		drawLine(x1, y1, x2, y2);
+		break;
+
+	case VectorPrimitive::RECTANGLE:
+		drawRectangle(x1, y1, x2, y2);
+		break;
+
+	case VectorPrimitive::ELLIPSE:
+		drawEllipse(x1, y1, x2, y2);
+		break;
+
+	default:
+		shape[head].strokeWidth = strokeWidthDefault;
+		break;
+	}
 }
 
-void Renderer::drawCursor(float x, float y) const
+void Renderer::drawCursor(float x, float y,int cursorNum) const
 {
-	float length = 10.0f;
-	float offset = 5.0f;
+	if (cursorNum == 0)
+	{
 
-	ofDrawLine(x + offset, y, x + offset + length, y);
-	ofDrawLine(x - offset, y, x - offset - length, y);
-	ofDrawLine(x, y + offset, x, y + offset + length);
-	ofDrawLine(x, y - offset, x, y - offset - length);
+	}
+	else {
+		ofSetLineWidth(2);
+		ofSetColor(32);
+		float length = 10.0f;
+		float offset = 5.0f;
+
+		ofDrawLine(x + offset, y, x + offset + length, y);
+		ofDrawLine(x - offset, y, x - offset - length, y);
+		ofDrawLine(x, y + offset, x, y + offset + length);
+		ofDrawLine(x, y - offset, x, y - offset - length);
+	}
+
+	
 }
 
 Renderer::~Renderer()
