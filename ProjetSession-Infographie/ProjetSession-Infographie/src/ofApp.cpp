@@ -56,6 +56,12 @@ void ofApp::exportListener() {
 	renderer->imageExport("test", "jpg");
 }
 
+void ofApp::colorListener() {
+	renderer->fillColorH = hue;
+	renderer->fillColorS = saturation;
+	renderer->fillColorB = brightness;
+}
+
 void ofApp::importListener() {
 	ofFileDialogResult result = ofSystemLoadDialog("Load file");
 	if (result.bSuccess) {
@@ -141,6 +147,10 @@ void ofApp::mousePressed(int x, int y, int button)
 
 	renderer->xMousePress = x;
 	renderer->yMousePress = y;
+
+	renderer->fillColorH = hue;
+	renderer->fillColorS = saturation;
+	renderer->fillColorB = brightness;
 
 	ofLog() << "<app::mouse pressed  at: (" << x << ", " << y << ")>";
 }

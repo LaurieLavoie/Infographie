@@ -169,24 +169,7 @@ void Renderer::addVectorShape(VectorPrimitive type)
 	shape[head].fillColor[1] = fillColorS;
 	shape[head].fillColor[2] = fillColorB;
 
-	switch (shape[head].type)
-	{
-	case VectorPrimitive::LINE:
-		shape[head].strokeWidth = ofRandom(1, 16);
-		break;
-
-	case VectorPrimitive::RECTANGLE:
-		shape[head].strokeWidth = strokeWidthDefault;
-		break;
-
-	case VectorPrimitive::ELLIPSE:
-		shape[head].strokeWidth = strokeWidthDefault;
-		break;
-
-	default:
-		shape[head].strokeWidth = strokeWidthDefault;
-		break;
-	}
+	shape[head].strokeWidth = strokeWidthDefault;
 
 	head = ++head >= count ? 0 : head;
 
