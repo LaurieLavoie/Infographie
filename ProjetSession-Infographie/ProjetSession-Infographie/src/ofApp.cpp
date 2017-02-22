@@ -153,7 +153,7 @@ void ofApp::mouseReleased(int x, int y, int button)
 	renderer->yMouseCurrent = y;
 
 	renderer->addVectorShape(renderer->drawMode);
-
+	renderer->drawCursor(0,0,0);
 	ofLog() << "<app::mouse released at: (" << x << ", " << y << ")>";
 }
 

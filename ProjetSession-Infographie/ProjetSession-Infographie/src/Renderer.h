@@ -30,7 +30,7 @@ public:
 	void draw();
 
 	void drawZone(float x1, float y1, float x2, float y2) const;
-	void drawCursor(float x, float y) const;
+	void drawCursor(float x, float y, int cursorNum) const;
 
 	int xMousePress;
 	int yMousePress;
