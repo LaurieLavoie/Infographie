@@ -18,21 +18,30 @@ class ofApp : public ofBaseApp{
 		void draw();
 		void exit();
 
-		void keyReleased(int key);
-		void windowResized(int w, int h);
+		void mouseMoved(int x, int y);
+		void mouseDragged(int x, int y, int button);
+		void mousePressed(int x, int y, int button);
+		void mouseReleased(int x, int y, int button);
+		void mouseEntered(int x, int y);
+		void mouseExited(int x, int y);
 
+		void circleListener();
+		void rectangleListener();
+		void lineListener();
 		void exportListener();
 		void importListener();
 
+		bool isLine;
+
 		ofxPanel gui;
-		ofxIntSlider posX;
-		ofxIntSlider posY;
-		ofxIntSlider radius;
 
 		ofxIntSlider hue;
 		ofxIntSlider saturation;
 		ofxIntSlider brightness;
 
+		ofxButton circleButton;
+		ofxButton rectangleButton;
+		ofxButton lineButton;
 		ofxButton importButton;
 		ofxButton exportButton;
 

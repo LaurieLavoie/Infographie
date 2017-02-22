@@ -9,15 +9,20 @@ void ofApp::setup()
 {
 	ofSetWindowTitle("Projet session");
 
+	isLine = false;
+
 	gui.setup();
-	gui.add(posX.setup("Position X", 0, 0, 600));
-	gui.add(posY.setup("Position Y", 30, 0, 600));
-	gui.add(radius.setup("radius", 60, 0, 300));
 
 	gui.add(hue.setup("hue", 0, 0, 255));
 	gui.add(saturation.setup("saturation", 0, 0, 255));
 	gui.add(brightness.setup("brightness", 0, 0, 255));
 
+	gui.add(circleButton.setup("circle"));
+	circleButton.addListener(this, &ofApp::circleListener);
+	gui.add(rectangleButton.setup("rectangle"));
+	rectangleButton.addListener(this, &ofApp::rectangleListener);
+	gui.add(lineButton.setup("line"));
+	lineButton.addListener(this, &ofApp::lineListener);
 	gui.add(importButton.setup("import"));
 	importButton.addListener(this, &ofApp::importListener);
 	gui.add(exportButton.setup("export"));
@@ -62,6 +67,28 @@ void ofApp::importListener() {
 	}
 }
 
+void ofApp::circleListener() {
+	renderer->fillColorH = hue;
+	renderer->fillColorS = saturation;
+	renderer->fillColorB = brightness;
+	renderer->drawMode = VectorPrimitive::ELLIPSE;
+
+}
+
+void ofApp::rectangleListener() {
+	renderer->fillColorH = hue;
+	renderer->fillColorS = saturation;
+	renderer->fillColorB = brightness;
+	renderer->drawMode = VectorPrimitive::RECTANGLE;
+}
+
+void ofApp::lineListener() {
+	renderer->fillColorH = hue;
+	renderer->fillColorS = saturation;
+	renderer->fillColorB = brightness;
+	renderer->drawMode = VectorPrimitive::LINE;
+}
+
 void ofApp::draw()
 {
 	ofClear(50.0f, 50.0f, 125.0f);
@@ -85,25 +112,65 @@ void ofApp::draw()
 		ofDisableDepthTest();
 	}
 
-	ofColor c = ofColor::fromHsb(hue, saturation, brightness);
-	ofSetColor(c);
-	ofCircle(posX, posY, radius);
 
 	gui.draw();
 }
 
-void ofApp::keyReleased(int key)
+void ofApp::mouseMoved(int x, int y)
 {
-	ofLog() << "<app::keyReleased: " << key << ">";
+	renderer->xMouseCurrent = x;
+	renderer->yMouseCurrent = y;
 
-	// valider si la clé relâchée est la barre d'espacement (space)
-	if (key == ' ')
-		renderer->imageExport("render", "png");
+		ofLog() << "<app::mouse move at: (" << x << ", " << y << ")>";
 }
 
-void ofApp::windowResized(int w, int h)
+void ofApp::mouseDragged(int x, int y, int button)
 {
-	ofLog() << "<app::windowResized to: (" << w << ", " << h << ")>";
+	renderer->xMouseCurrent = x;
+	renderer->yMouseCurrent = y;
+
+		ofLog() << "<app::mouse drag at: (" << x << ", " << y << ") button:" << button << ">";
+}
+
+void ofApp::mousePressed(int x, int y, int button)
+{
+	renderer->isMouseButtonPressed = true;
+
+	renderer->xMouseCurrent = x;
+	renderer->yMouseCurrent = y;
+
+	renderer->xMousePress = x;
+	renderer->yMousePress = y;
+
+	ofLog() << "<app::mouse pressed  at: (" << x << ", " << y << ")>";
+}
+
+void ofApp::mouseReleased(int x, int y, int button)
+{
+	renderer->isMouseButtonPressed = false;
+
+	renderer->xMouseCurrent = x;
+	renderer->yMouseCurrent = y;
+
+	renderer->addVectorShape(renderer->drawMode);
+
+	ofLog() << "<app::mouse released at: (" << x << ", " << y << ")>";
+}
+
+void ofApp::mouseEntered(int x, int y)
+{
+	renderer->xMouseCurrent = x;
+	renderer->yMouseCurrent = y;
+
+	ofLog() << "<app::mouse entered  at: (" << x << ", " << y << ")>";
+}
+
+void ofApp::mouseExited(int x, int y)
+{
+	renderer->xMouseCurrent = x;
+	renderer->yMouseCurrent = y;
+
+	ofLog() << "<app::mouse exited   at: (" << x << ", " << y << ")>";
 }
 
 void ofApp::exit()
