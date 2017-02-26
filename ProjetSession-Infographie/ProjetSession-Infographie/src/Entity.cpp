@@ -20,16 +20,14 @@ Entity::~Entity()
 
 void Entity::clearParent()
 {
-	this->parent.reset();
+	this->parent = nullptr;
 	this->node->clearParent();
 }
 
-void Entity::setParent(const std::shared_ptr<Entity>& parent)
+void Entity::setParent(Entity& parent)
 {
-	this->parent = parent;
-	if (parent.use_count() != 0) {
-		this->node->setParent( *(this->parent->node.get()) );
-	}
+	this->parent = &parent;
+	this->node->setParent( *(parent.node.get()) );
 }
 
 
@@ -41,6 +39,7 @@ void Entity::clearChildren()
 void Entity::addChild(const std::shared_ptr<Entity>& child)
 {
 	this->children.push_back(child);
+	child->setParent(*this);
 }
 
 void Entity::removeChild(const const std::shared_ptr<Entity>& child)
@@ -66,3 +65,94 @@ void Entity::draw()
 		child->draw();
 	});
 }
+
+void Entity::setPosition(const ofVec3f & p)
+{
+	this->node->setPosition(p);
+}
+
+void Entity::setOrientation(const ofVec3f & o)
+{
+	this->node->setOrientation(o);
+}
+
+void Entity::setOrientation(const ofQuaternion & q)
+{
+	this->node->setOrientation(q);
+}
+
+void Entity::setScale(const ofVec3f & s)
+{
+	this->node->setScale(s);
+}
+
+void Entity::setScale(float s)
+{
+	this->node->setScale(s);
+}
+
+ofVec3f Entity::getPosition() const
+{
+	return this->node->getPosition();
+}
+
+ofVec3f Entity::getOrientationEuler() const
+{
+	return this->node->getOrientationEuler();
+}
+
+ofQuaternion Entity::getOrientationQuat() const
+{
+	return this->node->getOrientationQuat();
+}
+
+ofVec3f Entity::getScale() const
+{
+	return this->node->getScale();
+}
+
+void Entity::lookAt(Entity& entityToLookAt)
+{
+	this->node->lookAt(entityToLookAt.getOfNode());
+}
+
+void Entity::orbit(float longitude, float latitude, float radius, Entity& entityToLookAt)
+{
+	this->node->orbit(longitude, latitude, radius, entityToLookAt.getOfNode());
+}
+
+void Entity::move(const ofVec3f & offset)
+{
+	this->node->move(offset);
+}
+
+void Entity::truck(float s)
+{
+	this->node->truck(s);
+}
+
+void Entity::boom(float s)
+{
+	this->node->boom(s);
+}
+
+void Entity::dolly(float s)
+{
+	this->node->dolly(s);
+}
+
+void Entity::tilt(float s)
+{
+	this->node->tilt(s);
+}
+
+void Entity::pan(float s)
+{
+	this->node->pan(s);
+}
+
+void Entity::roll(float s)
+{
+	this->node->roll(s);
+}
+

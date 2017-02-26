@@ -13,11 +13,8 @@ public:
 	virtual ~Camera();
 
 	void setOrtho(bool val);
-	bool isOrtho() const;
+	bool isOrtho();
 
 	ofCamera& getOfCamera();
-
-private:
-	bool _isOrtho;
 };
 

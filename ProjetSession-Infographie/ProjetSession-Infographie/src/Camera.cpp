@@ -2,8 +2,7 @@
 
 
 
-Camera::Camera() :
-	_isOrtho(false)
+Camera::Camera()
 {
 	this->node.reset(new ofCamera);
 }
@@ -24,14 +23,12 @@ void Camera::setOrtho(bool val)
 	{
 		this->getOfCamera().disableOrtho();
 	}
-
-	this->_isOrtho = val;
 }
 
 
-bool Camera::isOrtho() const
+bool Camera::isOrtho()
 {
-	return this->_isOrtho;
+	return this->getOfCamera().getOrtho();
 }
 
 

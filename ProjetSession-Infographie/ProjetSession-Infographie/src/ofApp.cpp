@@ -43,18 +43,30 @@ void ofApp::setup()
 	// Add dummy mesh for tests
 	auto raw_dummy = new ofCylinderPrimitive;
 	std::shared_ptr<Entity> dummy(new Entity(raw_dummy));
+	dummy->dolly(100.0f);
 	scene->getRoot().addChild(dummy);
+
+	auto raw_dummy2 = new ofCylinderPrimitive;
+	std::shared_ptr<Entity> dummy2(new Entity(raw_dummy2));
+	dummy2->dolly(-100.0f);
+	dummy->addChild(dummy2);
+
 	// Add dummy light
 	auto raw_light = new ofLight();
 	raw_light->enable();
 	raw_light->setAmbientColor(ofColor(250.0f, 240.0f, 220.0f) * 0.1);
 	raw_light->setPointLight();
-	raw_light->dolly(250.0f);
+	raw_light->boom(250.0f);
 	raw_light->setDiffuseColor(ofColor(250.0f, 240.0f, 220.0f));
 	std::shared_ptr<Entity> light(new Entity(raw_light)); // FIXME why is this not fixed at the camera's position? gotta investigate
 	scene->mainCamera.addChild(light);
-	scene->mainCamera.getOfNode().dolly(250.0f);
-	scene->mainCamera.getOfNode().boom(50.0f);
+	scene->mainCamera.dolly(250.0f);
+	scene->mainCamera.boom(50.0f);
+}
+
+void ofApp::update()
+{
+
 }
 
 void ofApp::cameraProjectionListener() {
@@ -115,9 +127,8 @@ void ofApp::draw()
 
 	if (scene != nullptr)
 	{
+		ofEnableLighting();
 		ofEnableDepthTest();
-		scene->mainCamera.getOfNode().tilt(0.1); // TODO get rid of me eventually
-		scene->mainCamera.getOfNode().boom(-0.5); // TODO get rid of me eventually
 
 		scene->mainCamera.getOfCamera().begin();
 		renderer->image.getTexture().bind();
@@ -127,6 +138,7 @@ void ofApp::draw()
 		scene->mainCamera.getOfCamera().end();
 
 		ofDisableDepthTest();
+		ofDisableLighting();
 	}
 
 
@@ -139,7 +151,7 @@ void ofApp::mouseMoved(int x, int y)
 	renderer->xMouseCurrent = x;
 	renderer->yMouseCurrent = y;
 
-		ofLog() << "<app::mouse move at: (" << x << ", " << y << ")>";
+	ofLog() << "<app::mouse move at: (" << x << ", " << y << ")>";
 }
 
 void ofApp::mouseDragged(int x, int y, int button)
@@ -147,7 +159,9 @@ void ofApp::mouseDragged(int x, int y, int button)
 	renderer->xMouseCurrent = x;
 	renderer->yMouseCurrent = y;
 
-		ofLog() << "<app::mouse drag at: (" << x << ", " << y << ") button:" << button << ">";
+	scene->mainCamera.orbit(x, y, 300, scene->getRoot());
+
+	ofLog() << "<app::mouse drag at: (" << x << ", " << y << ") button:" << button << ">";
 }
 
 void ofApp::mousePressed(int x, int y, int button)
