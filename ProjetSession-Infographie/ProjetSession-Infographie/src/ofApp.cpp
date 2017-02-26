@@ -28,6 +28,11 @@ void ofApp::setup()
 	gui.add(exportButton.setup("export"));
 	exportButton.addListener(this, &ofApp::exportListener);
 
+	cameraGui.setup();
+	cameraGui.add(cameraProjectionButton.setup("Projecion"));
+	cameraProjectionButton.addListener(this, &ofApp::cameraProjectionListener);
+	cameraGui.setPosition(210, 10);
+
 	renderer = new Renderer();
 	renderer->setup();
 
@@ -50,6 +55,12 @@ void ofApp::setup()
 	scene->mainCamera.addChild(light);
 	scene->mainCamera.getOfNode().dolly(250.0f);
 	scene->mainCamera.getOfNode().boom(50.0f);
+}
+
+void ofApp::cameraProjectionListener() {
+	if (scene == nullptr) return;
+
+	scene->mainCamera.setOrtho(!scene->mainCamera.isOrtho());
 }
 
 void ofApp::exportListener() {
@@ -120,6 +131,7 @@ void ofApp::draw()
 
 
 	gui.draw();
+	cameraGui.draw();
 }
 
 void ofApp::mouseMoved(int x, int y)

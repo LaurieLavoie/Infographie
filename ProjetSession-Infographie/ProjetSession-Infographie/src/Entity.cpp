@@ -53,7 +53,7 @@ std::vector<std::shared_ptr<Entity>>& Entity::getChildren()
 	return this->children;
 }
 
-// Please don't call clearParent or setParent, thank you.
+// Please don't call ofNode::clearParent or ofNode::setParent, thank you.
 ofNode& Entity::getOfNode()
 {
 	return *(this->node.get());

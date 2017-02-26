@@ -47,6 +47,11 @@ class ofApp : public ofBaseApp{
 		ofxButton importButton;
 		ofxButton exportButton;
 
+		void cameraProjectionListener();
+
+		ofxPanel cameraGui;
+		ofxButton cameraProjectionButton;
+
 		~ofApp();
 
 	private:
