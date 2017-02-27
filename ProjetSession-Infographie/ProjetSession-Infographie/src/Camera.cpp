@@ -4,6 +4,7 @@
 
 Camera::Camera()
 {
+	this->setAspectRatio(1.666f);
 	this->node.reset(new ofCamera);
 }
 
@@ -29,6 +30,65 @@ void Camera::setOrtho(bool val)
 bool Camera::isOrtho()
 {
 	return this->getOfCamera().getOrtho();
+}
+
+void Camera::setAspectRatio(float f)
+{
+	this->aspectRatio = f;
+}
+
+float Camera::getAspectRatio()
+{
+	// TODO use the actual aspect ration instead of 1.666f
+	return this->aspectRatio;
+}
+
+void Camera::setNearClip(float f)
+{
+	this->getOfCamera().setNearClip(f);
+}
+
+void Camera::setFarClip(float f)
+{
+	this->getOfCamera().setFarClip(f);
+}
+
+void Camera::setVerticalFov(float degrees)
+{
+	this->getOfCamera().setFov(DEG_TO_RAD(degrees));
+}
+
+void Camera::setHorizontalFov(float degrees)
+{
+	float hfov = DEG_TO_RAD(degrees);
+	
+	float vfov = 2.0f * atan(tan(hfov / 2.0f) / this->getAspectRatio());
+
+	this->getOfCamera().setFov(vfov);
+}
+
+float Camera::getNearClip()
+{
+	return this->getOfCamera().getNearClip();
+}
+
+float Camera::getFarClip()
+{
+	return this->getOfCamera().getFarClip();
+}
+
+float Camera::getVerticalFov()
+{
+	return this->getOfCamera().getFov();
+}
+
+float Camera::getHorizontalFov()
+{
+	float vfov = this->getVerticalFov();
+
+	float hfov = 2.0f * atan(tan(vfov / 2.0f) * this->getAspectRatio());
+
+	return hfov;
 }
 
 

@@ -49,9 +49,19 @@ class ofApp : public ofBaseApp{
 		ofxButton exportButton;
 
 		void cameraProjectionListener();
+		void cameraNearClipListener();
+		void cameraFarClipListener();
+		void cameraVFovListener();
+		void cameraHFovListener();
+		void cameraAspectRatioListener();
 
 		ofxPanel cameraGui;
 		ofxButton cameraProjectionButton;
+		ofxFloatSlider cameraNearClipSlider;
+		ofxFloatSlider cameraFarClipSlider;
+		ofxFloatSlider cameraVFovSlider;
+		ofxFloatSlider cameraHFovSlider;
+		ofxFloatSlider cameraAspectRatioSlider;
 
 		~ofApp();
 

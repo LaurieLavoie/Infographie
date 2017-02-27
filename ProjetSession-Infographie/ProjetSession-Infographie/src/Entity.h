@@ -21,7 +21,7 @@ public:
 	void removeChild(const std::shared_ptr<Entity>& child);
 	std::vector<std::shared_ptr<Entity>>& getChildren();
 
-	// Please don't call clearParent or setParent, thank you.
+	// Please don't call ofNode::clearParent or ofNode::setParent, thank you.
 	virtual ofNode& getOfNode();
 
 	virtual void draw();

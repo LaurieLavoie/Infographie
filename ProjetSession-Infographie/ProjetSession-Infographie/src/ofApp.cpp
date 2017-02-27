@@ -29,9 +29,14 @@ void ofApp::setup()
 	exportButton.addListener(this, &ofApp::exportListener);
 
 	cameraGui.setup();
+	cameraGui.setPosition(210, 10);
 	cameraGui.add(cameraProjectionButton.setup("Projecion"));
 	cameraProjectionButton.addListener(this, &ofApp::cameraProjectionListener);
-	cameraGui.setPosition(210, 10);
+	cameraGui.add(cameraNearClipSlider.setup("Near clipping plane", 0.1f, 0.1f, 500.0f));
+	cameraGui.add(cameraFarClipSlider.setup("Far clipping plane", 100.0f, 0.1f, 500.0f));
+	cameraGui.add(cameraVFovSlider.setup("Vertical fov", 60.0f, 10.0f, 179.0f));
+	cameraGui.add(cameraHFovSlider.setup("Horizontal fov", 60.0f, 10.0f, 179.0f));
+	cameraGui.add(cameraAspectRatioSlider.setup("Aspect ratio", 1.666f, 0.25f, 4.0f));
 
 	renderer = new Renderer();
 	renderer->setup();
@@ -73,6 +78,31 @@ void ofApp::cameraProjectionListener() {
 	if (scene == nullptr) return;
 
 	scene->mainCamera.setOrtho(!scene->mainCamera.isOrtho());
+}
+
+void ofApp::cameraNearClipListener()
+{
+	this->scene->mainCamera.setNearClip(cameraNearClipSlider);
+}
+
+void ofApp::cameraFarClipListener()
+{
+	this->scene->mainCamera.setFarClip(cameraFarClipSlider);
+}
+
+void ofApp::cameraVFovListener()
+{
+	scene->mainCamera.setVerticalFov(cameraVFovSlider);
+}
+
+void ofApp::cameraHFovListener()
+{
+	scene->mainCamera.setHorizontalFov(cameraHFovSlider);
+}
+
+void ofApp::cameraAspectRatioListener()
+{
+	scene->mainCamera.setAspectRatio(cameraAspectRatioSlider);
 }
 
 void ofApp::exportListener() {
