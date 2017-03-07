@@ -50,6 +50,8 @@ void Renderer::draw()
 			xMouseCurrent,
 			yMouseCurrent);
 	}
+
+	ofColor c = ofColor(0);
 	
 		drawCursor(xMouseCurrent, yMouseCurrent);
 	
@@ -64,10 +66,8 @@ void Renderer::draw()
 
 			ofNoFill();
 			ofSetLineWidth(shape[index].strokeWidth);
-			ofSetColor(
-				shape[index].fillColor[0],
-				shape[index].fillColor[1],
-				shape[index].fillColor[2]);
+			c.setHsb(shape[index].fillColor[0], shape[index].fillColor[1], shape[index].fillColor[2]);
+			ofSetColor(c);
 			drawLine(
 				shape[index].position1[0],
 				shape[index].position1[1],
@@ -79,10 +79,8 @@ void Renderer::draw()
 
 			ofFill();
 			ofSetLineWidth(0);
-			ofSetColor(
-				shape[index].fillColor[0],
-				shape[index].fillColor[1],
-				shape[index].fillColor[2]);
+			c.setHsb(shape[index].fillColor[0], shape[index].fillColor[1], shape[index].fillColor[2]);
+			ofSetColor(c);
 			drawRectangle(
 				shape[index].position1[0],
 				shape[index].position1[1],
@@ -95,10 +93,8 @@ void Renderer::draw()
 			ofFill();
 			ofSetLineWidth(0);
 			ofSetCircleResolution(48);
-			ofSetColor(
-				shape[index].fillColor[0],
-				shape[index].fillColor[1],
-				shape[index].fillColor[2]);
+			c.setHsb(shape[index].fillColor[0], shape[index].fillColor[1], shape[index].fillColor[2]);
+			ofSetColor(c);
 			drawEllipse(
 				shape[index].position1[0],
 				shape[index].position1[1],
@@ -109,11 +105,7 @@ void Renderer::draw()
 			break;
 		}
 	}
-
-	// afficher le curseur
-
-
-
+	
 }
 
 
@@ -277,6 +269,15 @@ void Renderer::addToShape(float x1, float y1, float x2, float y2, unsigned char 
 	}
 }
 
+void Renderer::removeFromShape()
+{
+	if (head >= 1)
+	{
+		shape[head-1].type = VectorPrimitive::NONE;
+
+		head = head - 1;
+	}
+}
 
 Renderer::~Renderer()
 {

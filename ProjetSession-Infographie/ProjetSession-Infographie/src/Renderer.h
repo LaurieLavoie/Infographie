@@ -58,6 +58,7 @@ public:
 	void drawEllipse(float x1, float y1, float x2, float y2) const;
 
 	void addToShape(float x1, float y1, float x2, float y2, unsigned char fillColorH, unsigned char fillColorS, unsigned char fillColorB, VectorPrimitive type);
+	void removeFromShape();
 
 	bool isMouseButtonPressed;
 
