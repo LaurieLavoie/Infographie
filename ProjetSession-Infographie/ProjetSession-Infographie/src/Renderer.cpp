@@ -22,7 +22,6 @@ void Renderer::setup()
 	head = 0;
 	strokeWidthDefault = 2;
 	shape = (StructVectorPrimitive *)calloc(size, stride);
-	historyShape = (StructVectorPrimitive *)calloc(5*stride, stride);
 	isMouseButtonPressed = false;
 }
 
@@ -70,12 +69,6 @@ void Renderer::draw()
 				shape[index].position1[1],
 				shape[index].position2[0],
 				shape[index].position2[1]);
-			addToHistory(shape[index].position1[0],
-				shape[index].position1[1],
-				shape[index].position2[0],
-				shape[index].position2[1], shape[index].fillColor[0],
-				shape[index].fillColor[1],
-				shape[index].fillColor[2]);
 			break;
 
 		case VectorPrimitive::RECTANGLE:
@@ -91,12 +84,6 @@ void Renderer::draw()
 				shape[index].position1[1],
 				shape[index].position2[0],
 				shape[index].position2[1]);
-			addToHistory(shape[index].position1[0],
-				shape[index].position1[1],
-				shape[index].position2[0],
-				shape[index].position2[1], shape[index].fillColor[0],
-				shape[index].fillColor[1],
-				shape[index].fillColor[2]);
 			break;
 
 		case VectorPrimitive::ELLIPSE:
@@ -113,12 +100,6 @@ void Renderer::draw()
 				shape[index].position1[1],
 				shape[index].position2[0],
 				shape[index].position2[1]);
-			addToHistory(shape[index].position1[0],
-				shape[index].position1[1],
-				shape[index].position2[0],
-				shape[index].position2[1], shape[index].fillColor[0],
-				shape[index].fillColor[1],
-				shape[index].fillColor[2]);
 
 		default:
 			break;
@@ -256,36 +237,26 @@ void Renderer::drawCursor(float x, float y,int cursorNum) const
 	
 }
 
-void Renderer::addToHistory(float x1, float y1, float x2, float y2, unsigned char fillColorH, unsigned char fillColorS, unsigned char fillColorB)
+void Renderer::addToShape(float x1, float y1, float x2, float y2, unsigned char fillColorH, unsigned char fillColorS, unsigned char fillColorB, VectorPrimitive type)
 {
-
-	for (int i = 0; i<5; i++)
+	if (head >= 1)
 	{
-		historyShape[i] = historyShape[i + 1];
+		shape[head].position1[0] = x1;
+		shape[head].position1[1] = y1;
+
+		shape[head].position2[0] = x2;
+		shape[head].position2[1] = y2;
+
+		shape[head].fillColor[0] = fillColorH;
+		shape[head].fillColor[1] = fillColorS;
+		shape[head].fillColor[2] = fillColorB;
+
+		shape[head].type = type;
+
+		shape[head].strokeWidth = strokeWidthDefault;
+
+		head = ++head >= count ? 0 : head;
 	}
-
-	historyShape[4].position1[0] = x1;
-	historyShape[4].position1[1] = y1;
-
-	historyShape[4].position2[0] = x2;
-	historyShape[4].position2[1] = y2;
-
-	historyShape[4].fillColor[0] = fillColorH;
-	historyShape[4].fillColor[1] = fillColorS;
-	historyShape[4].fillColor[2] = fillColorB;
-}
-
-void Renderer::addToShape(float x1, float y1, float x2, float y2, unsigned char fillColorH, unsigned char fillColorS, unsigned char fillColorB)
-{
-	shape[head].position1[0] = x1;
-	shape[head].position1[1] = y1;
-
-	shape[head].position2[0] = x2;
-	shape[head].position2[1] = y2;
-
-	shape[head].fillColor[0] = fillColorH;
-	shape[head].fillColor[1] = fillColorS;
-	shape[head].fillColor[2] = fillColorB;
 }
 
 Renderer::~Renderer()

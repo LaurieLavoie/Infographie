@@ -55,6 +55,9 @@ class ofApp : public ofBaseApp{
 		void cameraHFovListener();
 		void cameraAspectRatioListener();
 
+		int lastMouseReleasedX;
+		int lastMouseReleasedY;
+
 		ofxPanel cameraGui;
 		ofxButton cameraProjectionButton;
 		ofxFloatSlider cameraNearClipSlider;

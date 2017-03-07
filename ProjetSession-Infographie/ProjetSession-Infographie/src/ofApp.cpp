@@ -218,6 +218,9 @@ void ofApp::mouseReleased(int x, int y, int button)
 	renderer->xMouseCurrent = x;
 	renderer->yMouseCurrent = y;
 
+	lastMouseReleasedX = x;
+	lastMouseReleasedY = y;
+
 	renderer->addVectorShape(renderer->drawMode);
 	renderer->drawCursor(0,0,0);
 	ofLog() << "<app::mouse released at: (" << x << ", " << y << ")>";
@@ -242,7 +245,9 @@ void ofApp::mouseExited(int x, int y)
 void ofApp::keyReleased(int key) {
 
 	if (key == 114) {	//key r
-		// History will be there one day
+		// Redo
+		ofLog() << "Key r released";
+		renderer->addToShape(renderer->xMousePress +5, renderer->yMousePress +5, lastMouseReleasedX + 5, lastMouseReleasedY + 5, renderer->fillColorH, renderer->fillColorS, renderer->fillColorB, renderer->drawMode);
 	}
 }
 
