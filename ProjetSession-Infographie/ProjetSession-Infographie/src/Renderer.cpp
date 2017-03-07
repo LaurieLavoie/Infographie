@@ -259,6 +259,16 @@ void Renderer::addToShape(float x1, float y1, float x2, float y2, unsigned char 
 	}
 }
 
+void Renderer::removeFromShape()
+{
+	if (head >= 1)
+	{
+		shape[head-1].type = VectorPrimitive::NONE;
+
+		head = head - 1;
+	}
+}
+
 Renderer::~Renderer()
 {
 }

@@ -246,8 +246,18 @@ void ofApp::keyReleased(int key) {
 
 	if (key == 114) {	//key r
 		// Redo
-		ofLog() << "Key r released";
+		ofLog() << "Key R released";
 		renderer->addToShape(renderer->xMousePress +5, renderer->yMousePress +5, lastMouseReleasedX + 5, lastMouseReleasedY + 5, renderer->fillColorH, renderer->fillColorS, renderer->fillColorB, renderer->drawMode);
+		renderer->xMousePress = renderer->xMousePress + 5;
+		renderer->yMousePress = renderer->yMousePress + 5;
+		renderer->xMouseCurrent = lastMouseReleasedX + 5;
+		renderer->yMouseCurrent = lastMouseReleasedY + 5;
+	}
+	else if (key == 117) {
+		// Undo
+		renderer->removeFromShape();
+		ofLog() << "Key U released";
+
 	}
 }
 
