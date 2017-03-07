@@ -7,6 +7,7 @@ ofApp::ofApp()
 
 void ofApp::setup()
 {
+
 	ofSetWindowTitle("Projet session");
 
 	isLine = false;
@@ -27,6 +28,12 @@ void ofApp::setup()
 	importButton.addListener(this, &ofApp::importListener);
 	gui.add(exportButton.setup("export"));
 	exportButton.addListener(this, &ofApp::exportListener);
+	gui.add(translationButton.setup("translation"));
+	translationButton.addListener(this, &ofApp::translationListener);
+	gui.add(rotationButton.setup("rotation"));
+	rotationButton.addListener(this, &ofApp::rotationListener);
+	gui.add(proportionButton.setup("proportion"));
+	proportionButton.addListener(this, &ofApp::proportionListener);
 
 	cameraGui.setup();
 	cameraGui.setPosition(210, 10);
@@ -103,6 +110,27 @@ void ofApp::cameraHFovListener()
 void ofApp::cameraAspectRatioListener()
 {
 	scene->mainCamera.setAspectRatio(cameraAspectRatioSlider);
+}
+
+void ofApp::translationListener()
+{
+	renderer->drawMode = VectorPrimitive::NONE;
+	renderer->modeCursor = 2;
+	renderer->drawCursor(renderer->xMouseCurrent, renderer->yMouseCurrent);
+}
+
+void ofApp::rotationListener()
+{
+	renderer->drawMode = VectorPrimitive::NONE;
+	renderer->modeCursor = 3;
+	renderer->drawCursor(renderer->xMouseCurrent, renderer->yMouseCurrent);
+}
+
+void ofApp::proportionListener()
+{
+	renderer->drawMode = VectorPrimitive::NONE;
+	renderer->modeCursor = 4;
+	renderer->drawCursor(renderer->xMouseCurrent, renderer->yMouseCurrent);
 }
 
 void ofApp::exportListener() {
@@ -222,7 +250,9 @@ void ofApp::mouseReleased(int x, int y, int button)
 	lastMouseReleasedY = y;
 
 	renderer->addVectorShape(renderer->drawMode);
-	renderer->drawCursor(0,0,0);
+	renderer->modeCursor = 0;
+	renderer->drawCursor(0,0);
+	
 	ofLog() << "<app::mouse released at: (" << x << ", " << y << ")>";
 }
 

@@ -45,6 +45,11 @@ class ofApp : public ofBaseApp{
 		ofxButton circleButton;
 		ofxButton rectangleButton;
 		ofxButton lineButton;
+		ofxButton translationButton;
+		ofxButton rotationButton;
+		ofxButton proportionButton;
+
+
 		ofxButton importButton;
 		ofxButton exportButton;
 
@@ -54,6 +59,10 @@ class ofApp : public ofBaseApp{
 		void cameraVFovListener();
 		void cameraHFovListener();
 		void cameraAspectRatioListener();
+		void translationListener();
+		void rotationListener();
+		void proportionListener();
+
 
 		int lastMouseReleasedX;
 		int lastMouseReleasedY;

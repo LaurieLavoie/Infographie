@@ -36,9 +36,10 @@ void Renderer::draw()
 	// afficher l'image sur toute la surface de la fenêtre
 	image.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 
-	if (isMouseButtonPressed)
+	if (isMouseButtonPressed && drawMode != VectorPrimitive::NONE)
 	{
-		drawCursor(xMouseCurrent, yMouseCurrent, 1);
+		modeCursor = 1;
+	
 		ofSetColor(255);
 		ofSetLineWidth(3);
 		ofNoFill();
@@ -49,6 +50,9 @@ void Renderer::draw()
 			xMouseCurrent,
 			yMouseCurrent);
 	}
+	
+		drawCursor(xMouseCurrent, yMouseCurrent);
+	
 
 	for (index = 0; index < count; ++index)
 	{
@@ -105,7 +109,11 @@ void Renderer::draw()
 			break;
 		}
 	}
-	
+
+	// afficher le curseur
+
+
+
 }
 
 
@@ -216,26 +224,36 @@ void Renderer::drawZone(float x1, float y1, float x2, float y2) const
 	}
 }
 
-void Renderer::drawCursor(float x, float y,int cursorNum) const
+void Renderer::drawCursor(float x, float y) const
 {
-	if (cursorNum == 0)
+	ofSetLineWidth(2);
+	ofSetColor(32);
+	float length = 10.0f;
+	float offset = 5.0f;
+	if (modeCursor == 0)
 	{
 
 	}
-	else {
-		ofSetLineWidth(2);
-		ofSetColor(32);
-		float length = 10.0f;
-		float offset = 5.0f;
-
+	else if (modeCursor == 1) {
 		ofDrawLine(x + offset, y, x + offset + length, y);
 		ofDrawLine(x - offset, y, x - offset - length, y);
 		ofDrawLine(x, y + offset, x, y + offset + length);
 		ofDrawLine(x, y - offset, x, y - offset - length);
 	}
+	else if (modeCursor == 2) {
+		ofSetLineWidth(5);
+		ofDrawArrow(ofVec3f(x + offset, y), ofVec3f(x + offset + length, y), 5);
+		ofDrawArrow(ofVec3f(x - offset, y), ofVec3f(x - offset - length, y), 5);
+		ofDrawArrow(ofVec3f(x, y + offset), ofVec3f(x, y + offset + length), 5);
+		ofDrawArrow(ofVec3f(x, y - offset), ofVec3f(x, y - offset - length), 5);
+	}
+	else if (modeCursor == 3) {
 
-	
+	}
+
+
 }
+
 
 void Renderer::addToShape(float x1, float y1, float x2, float y2, unsigned char fillColorH, unsigned char fillColorS, unsigned char fillColorB, VectorPrimitive type)
 {
@@ -258,6 +276,7 @@ void Renderer::addToShape(float x1, float y1, float x2, float y2, unsigned char 
 		head = ++head >= count ? 0 : head;
 	}
 }
+
 
 Renderer::~Renderer()
 {

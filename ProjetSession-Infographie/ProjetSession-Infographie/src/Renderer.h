@@ -30,13 +30,15 @@ public:
 	void draw();
 
 	void drawZone(float x1, float y1, float x2, float y2) const;
-	void drawCursor(float x, float y, int cursorNum) const;
+	void drawCursor(float x, float y) const;
 
 	int xMousePress;
 	int yMousePress;
 
 	int xMouseCurrent;
 	int yMouseCurrent;
+
+	int modeCursor;
 
 	VectorPrimitive drawMode;
 	StructVectorPrimitive * shape;
