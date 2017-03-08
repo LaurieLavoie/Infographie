@@ -293,6 +293,24 @@ void Renderer::translateShape(float xPressed, float yPressed, float xReleased, f
 				shape[index].position2[1] = shape[index].position2[1] + translateY;
 			}
 		}
+		if (shape[index].type == VectorPrimitive::ELLIPSE)
+		{
+			double res;
+
+			res = sqrt((shape[index].position1[0] - shape[index].position2[0])*(shape[index].position1[0] - shape[index].position2[0]) + (shape[index].position1[1] - shape[index].position2[1])*(shape[index].position1[1] - shape[index].position2[1]));
+			//if (std::abs((x - shape[index].position2[0]) / (shape[index].position2[0] - shape[index].position1[0]) - (y - shape[index].position1[1]) / (shape[index].position2[1] - shape[index].position1[1])) < 0.05)
+			////{
+			//	ofLog() << "Line here";
+			//}
+		}
+
+		if (shape[index].type == VectorPrimitive::RECTANGLE)
+		{
+			//if (std::abs((x - shape[index].position2[0]) / (shape[index].position2[0] - shape[index].position1[0]) - (y - shape[index].position1[1]) / (shape[index].position2[1] - shape[index].position1[1])) < 0.05)
+			////{
+			//	ofLog() << "Line here";
+			//}
+		}
 	}
 }
 
