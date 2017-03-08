@@ -289,6 +289,21 @@ void Renderer::removeFromShape()
 	}
 }
 
+void Renderer::translateShape(float x, float y)
+{
+	int tolerance = 1;
+	for (index = 0; index < count; ++index)
+	{
+		if (shape[index].type == VectorPrimitive::LINE)
+		{
+			if (std::abs((x - shape[index].position2[0]) / (shape[index].position2[0] - shape[index].position1[0]) - (y - shape[index].position1[1]) / (shape[index].position2[1] - shape[index].position1[1])) < 0.05)
+			{
+				ofLog() << "Line here";
+			}
+		}
+	}
+}
+
 Renderer::~Renderer()
 {
 }
