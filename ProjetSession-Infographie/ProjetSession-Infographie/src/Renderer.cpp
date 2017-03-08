@@ -39,7 +39,7 @@ void Renderer::draw()
 	if (isMouseButtonPressed && drawMode != VectorPrimitive::NONE)
 	{
 		modeCursor = 1;
-	
+
 		ofSetColor(255);
 		ofSetLineWidth(3);
 		ofNoFill();
@@ -52,9 +52,9 @@ void Renderer::draw()
 	}
 
 	ofColor c = ofColor(0);
-	
-		drawCursor(xMouseCurrent, yMouseCurrent);
-	
+
+	drawCursor(xMouseCurrent, yMouseCurrent);
+
 
 	for (index = 0; index < count; ++index)
 	{
@@ -105,7 +105,7 @@ void Renderer::draw()
 			break;
 		}
 	}
-	
+
 }
 
 
@@ -120,33 +120,6 @@ void Renderer::imageExport(const string name, const string extension) const
 }
 
 void Renderer::imageImport(string path) {
-	/*int imageWidth;
-	int imageHeight;
-	int imageComponent;
-	int imagePixelCount;
-	int imageSize;
-
-	GLuint textureID;
-	GLubyte * pixels;
-
-	imagePixelCount = imageWidth * imageHeight;
-	imageSize = imagePixelCount * imageComponent;
-	pixels = (GLubyte *)calloc(imageSize, sizeof(GLubyte));
-	glGenTextures(1, &textureID);
-
-	glBindTexture(GL_TEXTURE_2D, textureID);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-	glTexImage2D(
-		GL_TEXTURE_2D, 0, GL_RGBA, imageWidth, imageHeight,
-		0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	free(pixels);*/
 	image.load(path);
 	ofSetWindowShape(image.getWidth(), image.getHeight());
 }
@@ -222,6 +195,7 @@ void Renderer::drawCursor(float x, float y) const
 	ofSetColor(32);
 	float length = 10.0f;
 	float offset = 5.0f;
+	float place = 15.0f;
 	if (modeCursor == 0)
 	{
 
@@ -240,7 +214,18 @@ void Renderer::drawCursor(float x, float y) const
 		ofDrawArrow(ofVec3f(x, y - offset), ofVec3f(x, y - offset - length), 5);
 	}
 	else if (modeCursor == 3) {
-
+		ofDrawLine(x - offset, y + offset + place, x + offset + length, y + offset + place);
+		ofDrawLine(x + offset + length, y + offset + place, x + offset * 2 + length, y + place);
+		ofDrawLine(x + offset + length, y - offset + place, x + offset * 2 + length, y + place);
+		ofDrawLine(x - offset, y - offset + place, x + offset + length, y - offset + place);
+		ofDrawArrow(ofVec3f(x - offset, y + offset + place), ofVec3f(x - offset - length, y + offset + place), 3);
+	}
+	else if (modeCursor == 4) {
+		ofSetLineWidth(5);
+		ofDrawLine(x - offset, y + offset + place, x - offset + 25, y + offset + place + 25);
+		ofDrawEllipse(x - offset, y + offset + place, 20, 20);
+		ofSetColor(100);
+		ofDrawEllipse(x - offset, y + offset + place, 15, 15);
 	}
 
 
@@ -273,7 +258,7 @@ void Renderer::removeFromShape()
 {
 	if (head >= 1)
 	{
-		shape[head-1].type = VectorPrimitive::NONE;
+		shape[head - 1].type = VectorPrimitive::NONE;
 
 		head = head - 1;
 	}
