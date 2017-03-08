@@ -224,6 +224,8 @@ void Renderer::drawCursor(float x, float y) const
 		ofDrawEllipse(x - offset, y + offset + place, 20, 20);
 		ofSetColor(100);
 		ofDrawEllipse(x - offset, y + offset + place, 15, 15);
+		
+	}
 	else if (modeCursor == 5) {
 		ofNoFill();
 		ofRectangle myRect;
@@ -239,10 +241,7 @@ void Renderer::drawCursor(float x, float y) const
 		ofDrawRectangle(x + 4, y - 12, 10, 7);
 
 	}
-
-
 }
-
 
 void Renderer::addToShape(float x1, float y1, float x2, float y2, unsigned char fillColorH, unsigned char fillColorS, unsigned char fillColorB, VectorPrimitive type)
 {
