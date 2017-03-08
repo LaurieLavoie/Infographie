@@ -304,6 +304,10 @@ void Renderer::translateShape(float xPressed, float yPressed, float xReleased, f
 				shape[index].position2[1] = shape[index].position2[1] + translateY;
 			}
 		}
+		else if (shape[index].type == VectorPrimitive::ELLIPSE)
+		{
+
+		}
 	}
 }
 
