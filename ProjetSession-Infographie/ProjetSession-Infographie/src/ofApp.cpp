@@ -37,6 +37,8 @@ void ofApp::setup()
 
 	cameraGui.setup();
 	cameraGui.setPosition(210, 10);
+	cameraGui.add(cameraStartButton.setup("Camera start"));
+	cameraStartButton.addListener(this, &ofApp::cameraStartListener);
 	cameraGui.add(cameraProjectionButton.setup("Projecion"));
 	cameraProjectionButton.addListener(this, &ofApp::cameraProjectionListener);
 	cameraGui.add(cameraNearClipSlider.setup("Near clipping plane", 0.1f, 0.1f, 500.0f));
@@ -79,6 +81,10 @@ void ofApp::setup()
 void ofApp::update()
 {
 
+}
+
+void ofApp::cameraStartListener() {
+	renderer->modeCursor = 5;
 }
 
 void ofApp::cameraProjectionListener() {
@@ -155,6 +161,7 @@ void ofApp::importListener() {
 }
 
 void ofApp::circleListener() {
+	renderer->modeCursor = 1;
 	renderer->fillColorH = hue;
 	renderer->fillColorS = saturation;
 	renderer->fillColorB = brightness;
@@ -163,6 +170,7 @@ void ofApp::circleListener() {
 }
 
 void ofApp::rectangleListener() {
+	renderer->modeCursor = 1;
 	renderer->fillColorH = hue;
 	renderer->fillColorS = saturation;
 	renderer->fillColorB = brightness;
@@ -170,6 +178,7 @@ void ofApp::rectangleListener() {
 }
 
 void ofApp::lineListener() {
+	renderer->modeCursor = 1;
 	renderer->fillColorH = hue;
 	renderer->fillColorS = saturation;
 	renderer->fillColorB = brightness;
@@ -217,7 +226,10 @@ void ofApp::mouseDragged(int x, int y, int button)
 	renderer->xMouseCurrent = x;
 	renderer->yMouseCurrent = y;
 
-	scene->mainCamera.orbit(x, y, 300, scene->getRoot());
+	if (renderer->modeCursor == 5)
+	{
+		scene->mainCamera.orbit(x, y, 300, scene->getRoot());
+	}
 
 	ofLog() << "<app::mouse drag at: (" << x << ", " << y << ") button:" << button << ">";
 }
@@ -250,7 +262,6 @@ void ofApp::mouseReleased(int x, int y, int button)
 	lastMouseReleasedY = y;
 
 	renderer->addVectorShape(renderer->drawMode);
-	renderer->modeCursor = 0;
 	renderer->drawCursor(0,0);
 	
 	ofLog() << "<app::mouse released at: (" << x << ", " << y << ")>";

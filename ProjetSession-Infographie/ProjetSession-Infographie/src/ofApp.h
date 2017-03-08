@@ -53,6 +53,7 @@ class ofApp : public ofBaseApp{
 		ofxButton importButton;
 		ofxButton exportButton;
 
+		void cameraStartListener();
 		void cameraProjectionListener();
 		void cameraNearClipListener();
 		void cameraFarClipListener();
@@ -68,6 +69,7 @@ class ofApp : public ofBaseApp{
 		int lastMouseReleasedY;
 
 		ofxPanel cameraGui;
+		ofxButton cameraStartButton;
 		ofxButton cameraProjectionButton;
 		ofxFloatSlider cameraNearClipSlider;
 		ofxFloatSlider cameraFarClipSlider;

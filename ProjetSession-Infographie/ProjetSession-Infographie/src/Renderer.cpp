@@ -37,9 +37,7 @@ void Renderer::draw()
 	image.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 
 	if (isMouseButtonPressed && drawMode != VectorPrimitive::NONE)
-	{
-		modeCursor = 1;
-
+	{	
 		ofSetColor(255);
 		ofSetLineWidth(3);
 		ofNoFill();
@@ -226,6 +224,20 @@ void Renderer::drawCursor(float x, float y) const
 		ofDrawEllipse(x - offset, y + offset + place, 20, 20);
 		ofSetColor(100);
 		ofDrawEllipse(x - offset, y + offset + place, 15, 15);
+	else if (modeCursor == 5) {
+		ofNoFill();
+		ofRectangle myRect;
+		myRect.x = x - offset;
+		myRect.y = y - offset;
+		myRect.width = 65;
+		myRect.height = 40;
+
+		ofDrawRectRounded(myRect, 10);
+		ofPoint position = ofPoint(x + 35, y + 15);
+		ofDrawCircle(position, 7);
+		ofDrawCircle(position, 3);
+		ofDrawRectangle(x + 4, y - 12, 10, 7);
+
 	}
 
 
