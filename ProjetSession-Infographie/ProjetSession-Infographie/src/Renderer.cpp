@@ -311,6 +311,37 @@ void Renderer::translateShape(float xPressed, float yPressed, float xReleased, f
 	}
 }
 
+void Renderer::proportionShape(float xPressed, float yPressed, float xReleased, float yReleased)
+{
+	int tolerance = 1;
+	for (index = 0; index < count; ++index)
+	{
+		if (shape[index].type == VectorPrimitive::LINE)
+		{
+			if (std::abs((xPressed - shape[index].position2[0]) / (shape[index].position2[0] - shape[index].position1[0]) - (yPressed - shape[index].position1[1]) / (shape[index].position2[1] - shape[index].position1[1])) < tolerance)
+			{
+				ofLog() << "Line here";
+
+				shape[index].position2[0] = xReleased;
+				shape[index].position2[1] = yReleased;
+			}
+		}
+		else if (shape[index].type == VectorPrimitive::RECTANGLE)
+		{
+			if (xPressed < shape[index].position2[0] && xPressed > shape[index].position1[0] && yPressed < shape[index].position2[1] && yPressed > shape[index].position1[1])
+			{
+				ofLog() << "Rectangle here";
+				shape[index].position2[0] = xReleased;
+				shape[index].position2[1] = yReleased;
+			}
+		}
+		else if (shape[index].type == VectorPrimitive::ELLIPSE)
+		{
+
+		}
+	}
+}
+
 Renderer::~Renderer()
 {
 }

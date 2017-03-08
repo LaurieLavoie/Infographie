@@ -268,6 +268,14 @@ void ofApp::mouseReleased(int x, int y, int button)
 	{
 		renderer->translateShape(renderer->xMousePress, renderer->yMousePress, x, y);
 	}
+	else if (renderer->modeCursor == 3)
+	{
+
+	}
+	else if (renderer->modeCursor == 4)
+	{
+		renderer->proportionShape(renderer->xMousePress, renderer->yMousePress, x, y);
+	}
 	
 	ofLog() << "<app::mouse released at: (" << x << ", " << y << ")>";
 }
