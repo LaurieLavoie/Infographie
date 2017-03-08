@@ -277,16 +277,27 @@ void Renderer::removeFromShape()
 void Renderer::translateShape(float xPressed, float yPressed, float xReleased, float yReleased)
 {
 	int tolerance = 1;
+	int translateX = xReleased - xPressed;
+	int translateY = yReleased - yPressed;
 	for (index = 0; index < count; ++index)
 	{
 		if (shape[index].type == VectorPrimitive::LINE)
 		{
-			if (std::abs((xPressed - shape[index].position2[0]) / (shape[index].position2[0] - shape[index].position1[0]) - (yPressed - shape[index].position1[1]) / (shape[index].position2[1] - shape[index].position1[1])) < 1)
+			if (std::abs((xPressed - shape[index].position2[0]) / (shape[index].position2[0] - shape[index].position1[0]) - (yPressed - shape[index].position1[1]) / (shape[index].position2[1] - shape[index].position1[1])) < tolerance)
 			{
 				ofLog() << "Line here";
-				int translateX = xReleased - xPressed;
-				int translateY = yReleased - yPressed;
 
+				shape[index].position1[0] = shape[index].position1[0] + translateX;
+				shape[index].position1[1] = shape[index].position1[1] + translateY;
+				shape[index].position2[0] = shape[index].position2[0] + translateX;
+				shape[index].position2[1] = shape[index].position2[1] + translateY;
+			}
+		}
+		else if (shape[index].type == VectorPrimitive::RECTANGLE)
+		{
+			if (xPressed < shape[index].position2[0] && xPressed > shape[index].position1[0] && yPressed < shape[index].position2[1] && yPressed > shape[index].position1[1])
+			{
+				ofLog() << "Rectangle here";
 				shape[index].position1[0] = shape[index].position1[0] + translateX;
 				shape[index].position1[1] = shape[index].position1[1] + translateY;
 				shape[index].position2[0] = shape[index].position2[0] + translateX;
