@@ -59,7 +59,7 @@ public:
 
 	void addToShape(float x1, float y1, float x2, float y2, unsigned char fillColorH, unsigned char fillColorS, unsigned char fillColorB, VectorPrimitive type);
 	void removeFromShape();
-	void translateShape(float x, float y);
+	void translateShape(float xPressed, float yPressed, float xReleased, float yReleased);
 
 	bool isMouseButtonPressed;
 

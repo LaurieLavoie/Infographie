@@ -224,6 +224,7 @@ void Renderer::drawCursor(float x, float y) const
 		ofDrawEllipse(x - offset, y + offset + place, 20, 20);
 		ofSetColor(100);
 		ofDrawEllipse(x - offset, y + offset + place, 15, 15);
+	}
 	else if (modeCursor == 5) {
 		ofNoFill();
 		ofRectangle myRect;
@@ -276,16 +277,23 @@ void Renderer::removeFromShape()
 	}
 }
 
-void Renderer::translateShape(float x, float y)
+void Renderer::translateShape(float xPressed, float yPressed, float xReleased, float yReleased)
 {
 	int tolerance = 1;
 	for (index = 0; index < count; ++index)
 	{
 		if (shape[index].type == VectorPrimitive::LINE)
 		{
-			if (std::abs((x - shape[index].position2[0]) / (shape[index].position2[0] - shape[index].position1[0]) - (y - shape[index].position1[1]) / (shape[index].position2[1] - shape[index].position1[1])) < 0.05)
+			if (std::abs((xPressed - shape[index].position2[0]) / (shape[index].position2[0] - shape[index].position1[0]) - (yPressed - shape[index].position1[1]) / (shape[index].position2[1] - shape[index].position1[1])) < 1)
 			{
 				ofLog() << "Line here";
+				int translateX = xReleased - xPressed;
+				int translateY = yReleased - yPressed;
+
+				shape[index].position1[0] = shape[index].position1[0] + translateX;
+				shape[index].position1[1] = shape[index].position1[1] + translateY;
+				shape[index].position2[0] = shape[index].position2[0] + translateX;
+				shape[index].position2[1] = shape[index].position2[1] + translateY;
 			}
 		}
 	}

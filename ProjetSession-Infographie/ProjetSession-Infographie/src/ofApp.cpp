@@ -266,7 +266,7 @@ void ofApp::mouseReleased(int x, int y, int button)
 
 	if (renderer->modeCursor == 2)
 	{
-		renderer->translateShape(renderer->xMousePress = x, renderer->yMousePress = y);
+		renderer->translateShape(renderer->xMousePress, renderer->yMousePress, x, y);
 	}
 	
 	ofLog() << "<app::mouse released at: (" << x << ", " << y << ")>";
