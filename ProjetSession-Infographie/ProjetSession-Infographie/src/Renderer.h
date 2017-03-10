@@ -61,6 +61,7 @@ public:
 	void removeFromShape();
 	void translateShape(float xPressed, float yPressed, float xReleased, float yReleased);
 	void proportionShape(float xPressed, float yPressed, float xReleased, float yReleased);
+	void rotationShape(float xPressed, float yPressed, float xReleased, float yReleased);
 
 	bool isMouseButtonPressed;
 

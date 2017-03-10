@@ -306,7 +306,23 @@ void Renderer::translateShape(float xPressed, float yPressed, float xReleased, f
 		}
 		else if (shape[index].type == VectorPrimitive::ELLIPSE)
 		{
+			float radius1 = (shape[index].position2[0] - shape[index].position1[0])/2;
+			float radius2 = (shape[index].position2[1] - shape[index].position1[1])/2;
+			float test1 = yPressed - shape[index].position1[1]-radius2;
+			float test2 = xPressed - shape[index].position1[0]-radius1;
+			float firstFormula = ((test1 * test1) / (radius2 * radius2));
+			float secondFormula = ((test2*test2) / (radius1 * radius1));
+			float result = firstFormula + secondFormula;
+			
+			if (result < 1)
+			{
+				ofLog() << "Ellipse here";
+				shape[index].position1[0] = shape[index].position1[0] + translateX;
+				shape[index].position1[1] = shape[index].position1[1] + translateY;
+				shape[index].position2[0] = shape[index].position2[0] + translateX;
+				shape[index].position2[1] = shape[index].position2[1] + translateY;
 
+			}
 		}
 	}
 }
@@ -337,9 +353,27 @@ void Renderer::proportionShape(float xPressed, float yPressed, float xReleased, 
 		}
 		else if (shape[index].type == VectorPrimitive::ELLIPSE)
 		{
+			float radius1 = (shape[index].position2[0] - shape[index].position1[0]) / 2;
+			float radius2 = (shape[index].position2[1] - shape[index].position1[1]) / 2;
+			float test1 = yPressed - shape[index].position1[1] - radius2;
+			float test2 = xPressed - shape[index].position1[0] - radius1;
+			float firstFormula = ((test1 * test1) / (radius2 * radius2));
+			float secondFormula = ((test2*test2) / (radius1 * radius1));
+			float result = firstFormula + secondFormula;
+
+			if (result < 1)
+			{
+				ofLog() << "Ellipse here";
+				shape[index].position2[0] = xReleased;
+				shape[index].position2[1] = yReleased;
+			}
 
 		}
 	}
+}
+
+void Renderer::rotationShape(float xPressed, float yPressed, float xReleased, float yReleased)
+{
 }
 
 Renderer::~Renderer()
