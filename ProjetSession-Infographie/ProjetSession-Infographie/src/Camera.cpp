@@ -55,14 +55,14 @@ void Camera::setFarClip(float f)
 
 void Camera::setVerticalFov(float degrees)
 {
-	this->getOfCamera().setFov(DEG_TO_RAD(degrees));
+	this->getOfCamera().setFov(degrees);
 }
 
 void Camera::setHorizontalFov(float degrees)
 {
 	float hfov = DEG_TO_RAD(degrees);
 	
-	float vfov = 2.0f * atan(tan(hfov / 2.0f) / this->getAspectRatio());
+	float vfov = RAD_TO_DEG(HFovToVFov(hfov, this->getAspectRatio()));
 
 	this->getOfCamera().setFov(vfov);
 }
@@ -84,9 +84,9 @@ float Camera::getVerticalFov()
 
 float Camera::getHorizontalFov()
 {
-	float vfov = this->getVerticalFov();
+	float vfov = DEG_TO_RAD(this->getVerticalFov());
 
-	float hfov = 2.0f * atan(tan(vfov / 2.0f) * this->getAspectRatio());
+	float hfov = RAD_TO_DEG(Camera::VFovToHFov(vfov,this->getAspectRatio()));
 
 	return hfov;
 }

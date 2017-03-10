@@ -55,11 +55,12 @@ class ofApp : public ofBaseApp{
 
 		void cameraStartListener();
 		void cameraProjectionListener();
-		void cameraNearClipListener();
-		void cameraFarClipListener();
-		void cameraVFovListener();
-		void cameraHFovListener();
-		void cameraAspectRatioListener();
+		void cameraNearClipListener(float&);
+		void cameraFarClipListener(float&);
+		void cameraVFovListener(float&);
+		void cameraHFovListener(float&);
+		void cameraAspectRatioListener(float&);
+		
 		void translationListener();
 		void rotationListener();
 		void proportionListener();
