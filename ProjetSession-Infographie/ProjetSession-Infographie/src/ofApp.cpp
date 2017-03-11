@@ -267,7 +267,7 @@ void ofApp::mouseDragged(int x, int y, int button)
 		{
 			auto oldRadius = scene->mainCamera.getOrbitRadius();
 			auto radius = oldRadius + (delta_y * log(oldRadius) * 0.75f);
-			radius = radius <= 0 ? 50.0f : radius;
+			radius = radius <= 100.0f ? 100.0f : radius;
 			scene->mainCamera.setOrbitRadius(radius);
 		}
 	}
