@@ -69,20 +69,11 @@ void Renderer::draw()
 			c.setHsb(shape[index].fillColor[0], shape[index].fillColor[1], shape[index].fillColor[2]);
 			ofSetColor(c);
 
-
-		////	ofPushMatrix();
-		//	ofSetRectMode(OF_RECTMODE_CORNER);
-			//ofTranslate(shape[index].position1[0], 0, 0);
-		//	ofTranslate(0, shape[index].position1[1], 0);
-		//	ofRotateZ(anglesShapes[index]);
-
 			drawLine(
 				shape[index].position1[0],
 				shape[index].position1[1],
 				shape[index].position2[0] ,
 				shape[index].position2[1]);
-
-		//	ofPopMatrix();
 
 			break;
 
