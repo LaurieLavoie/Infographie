@@ -256,10 +256,20 @@ void ofApp::mouseDragged(int x, int y, int button)
 
 	if (renderer->modeCursor == 5)
 	{
-		auto longitude = scene->mainCamera.getLongitude() + delta_x;
-		auto latitude = scene->mainCamera.getLatitude() + delta_y;
-		scene->mainCamera.setLongitude(longitude);
-		scene->mainCamera.setLatitude(latitude);
+		if (button == OF_MOUSE_BUTTON_LEFT)
+		{
+			auto longitude = scene->mainCamera.getLongitude() + delta_x;
+			auto latitude = scene->mainCamera.getLatitude() + delta_y;
+			scene->mainCamera.setLongitude(longitude);
+			scene->mainCamera.setLatitude(latitude);
+		}
+		else if(button == OF_MOUSE_BUTTON_RIGHT)
+		{
+			auto oldRadius = scene->mainCamera.getOrbitRadius();
+			auto radius = oldRadius + (delta_y * log(oldRadius) * 0.75f);
+			radius = radius <= 0 ? 50.0f : radius;
+			scene->mainCamera.setOrbitRadius(radius);
+		}
 	}
 
 	ofLog() << "<app::mouse drag at: (" << x << ", " << y << ") button:" << button << ">";
