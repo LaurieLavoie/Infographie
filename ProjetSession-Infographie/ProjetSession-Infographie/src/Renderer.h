@@ -71,8 +71,10 @@ public:
 
 	bool isMouseButtonPressed;
 
+	bool isOnLine(int index, int x, int y);
 
-	
+	bool isOnEllipse(int index, int x, int y);
+
 
 
 	~Renderer();

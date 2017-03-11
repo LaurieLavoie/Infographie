@@ -68,11 +68,22 @@ void Renderer::draw()
 			ofSetLineWidth(shape[index].strokeWidth);
 			c.setHsb(shape[index].fillColor[0], shape[index].fillColor[1], shape[index].fillColor[2]);
 			ofSetColor(c);
+
+
+			ofPushMatrix();
+			ofSetRectMode(OF_RECTMODE_CORNER);
+			ofTranslate(shape[index].position1[0], 0, 0);
+			ofTranslate(0, shape[index].position1[1], 0);
+			ofRotateZ(anglesShapes[index]);
+
 			drawLine(
-				shape[index].position1[0],
-				shape[index].position1[1],
-				shape[index].position2[0],
-				shape[index].position2[1]);
+				0,
+				0,
+				shape[index].position2[0] - shape[index].position1[0],
+				shape[index].position2[1] - shape[index].position1[1]);
+
+			ofPopMatrix();
+
 			break;
 
 		case VectorPrimitive::RECTANGLE:
@@ -95,8 +106,6 @@ void Renderer::draw()
 
 			ofPopMatrix();
 
-
-
 			break;
 
 		case VectorPrimitive::ELLIPSE:
@@ -106,11 +115,20 @@ void Renderer::draw()
 			ofSetCircleResolution(48);
 			c.setHsb(shape[index].fillColor[0], shape[index].fillColor[1], shape[index].fillColor[2]);
 			ofSetColor(c);
+
+			ofPushMatrix();
+			ofSetRectMode(OF_RECTMODE_CORNER);
+			ofTranslate(shape[index].position1[0], 0, 0);
+			ofTranslate(0, shape[index].position1[1], 0);
+			ofRotateZ(anglesShapes[index]);
+
 			drawEllipse(
-				shape[index].position1[0],
-				shape[index].position1[1],
-				shape[index].position2[0],
-				shape[index].position2[1]);
+				0,
+				0,
+				shape[index].position2[0] - shape[index].position1[0],
+				shape[index].position2[1] - shape[index].position1[1]);
+
+			ofPopMatrix();
 
 		default:
 			break;
@@ -387,8 +405,10 @@ void Renderer::rotateShape(float xPressed, float yPressed, float xReleased, floa
 			{
 				ofLog() << "Line here";
 
-				//shape[index].position2[0] = xReleased;
-				//shape[index].position2[1] = yReleased;
+				if (anglesShapes[index] == 360) {
+					anglesShapes[index] = 0;
+				}
+				anglesShapes[index] += 45;
 			}
 		}
 		else if (shape[index].type == VectorPrimitive::RECTANGLE)
@@ -416,16 +436,25 @@ void Renderer::rotateShape(float xPressed, float yPressed, float xReleased, floa
 			if (result < 1)
 			{
 				ofLog() << "Ellipse here";
-				shape[index].position2[0] = xReleased;
-				shape[index].position2[1] = yReleased;
+				if (anglesShapes[index] == 360) {
+					anglesShapes[index] = 0;
+				}
+				anglesShapes[index] += 45;
 			}
 
 		}
 	}
 }
 
-void Renderer::rotationShape(float xPressed, float yPressed, float xReleased, float yReleased)
+
+bool Renderer::isOnLine(int index, int x, int y)
 {
+
+}
+
+bool Renderer::isOnEllipse(int index, int x, int y)
+{
+
 }
 
 bool Renderer::isOnRectangle(int index, int x, int y)
