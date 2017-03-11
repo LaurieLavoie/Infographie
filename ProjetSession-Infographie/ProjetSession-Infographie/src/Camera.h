@@ -47,7 +47,21 @@ public:
 
 	ofCamera& getOfCamera();
 
+	float getLongitude();
+	void setLongitude(float longitude);
+	float getLatitude();
+	void setLatitude(float latitude);
+	float getOrbitRadius();
+	void setOrbitRadius(float radius);
+	ofVec3f getOrbitOrigin();
+	void setOrbitOrigin(const ofVec3f& centerPoint);
+
 private:
 	float aspectRatio;
+
+	float longitude;
+	float latitude;
+	float orbitRadius;
+	ofVec3f orbitOrigin;
 };
 

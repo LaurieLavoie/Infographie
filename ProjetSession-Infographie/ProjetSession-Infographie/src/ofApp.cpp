@@ -73,15 +73,17 @@ void ofApp::setup()
 	// Add dummy light
 	auto raw_light = new ofLight();
 	raw_light->enable();
-	raw_light->setAmbientColor(ofColor(250.0f, 240.0f, 220.0f));
+	raw_light->setAmbientColor(ofColor(250.0f, 240.0f, 220.0f) * 0.1f);
 	raw_light->setPointLight();
 	raw_light->boom(50.0f);
 	raw_light->setDiffuseColor(ofColor(250.0f, 240.0f, 220.0f));
 	raw_light->setSpecularColor(ofColor(250.0f, 240.0f, 220.0f));
-	std::shared_ptr<Entity> light(new Entity(raw_light)); // FIXME why is this not fixed at the camera's position? gotta investigate
+	std::shared_ptr<Entity> light(new Entity(raw_light));
 	scene->mainCamera.addChild(light);
 	scene->mainCamera.dolly(250.0f);
 	scene->mainCamera.boom(50.0f);
+
+	scene->mainCamera.setOrbitRadius(300.0f);
 }
 
 void ofApp::update()
@@ -208,13 +210,15 @@ void ofApp::lineListener() {
 
 void ofApp::draw()
 {
-	ofClear(50.0f, 50.0f, 125.0f);
+	ofClear(50.0f, 50.0f, 250.0f);
 
 	renderer->draw();
 
 
 	if (scene != nullptr)
 	{
+		ofSetColor(255);
+
 		ofEnableLighting();
 		ofEnableDepthTest();
 
@@ -244,12 +248,18 @@ void ofApp::mouseMoved(int x, int y)
 
 void ofApp::mouseDragged(int x, int y, int button)
 {
+	auto delta_x = x - renderer->xMouseCurrent;
+	auto delta_y = y - renderer->yMouseCurrent;
+
 	renderer->xMouseCurrent = x;
 	renderer->yMouseCurrent = y;
 
 	if (renderer->modeCursor == 5)
 	{
-		scene->mainCamera.orbit(x, y, 300, scene->getRoot());
+		auto longitude = scene->mainCamera.getLongitude() + delta_x;
+		auto latitude = scene->mainCamera.getLatitude() + delta_y;
+		scene->mainCamera.setLongitude(longitude);
+		scene->mainCamera.setLatitude(latitude);
 	}
 
 	ofLog() << "<app::mouse drag at: (" << x << ", " << y << ") button:" << button << ">";

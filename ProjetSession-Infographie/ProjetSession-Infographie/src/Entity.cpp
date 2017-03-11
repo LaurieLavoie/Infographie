@@ -121,6 +121,11 @@ void Entity::orbit(float longitude, float latitude, float radius, Entity& entity
 	this->node->orbit(longitude, latitude, radius, entityToLookAt.getOfNode());
 }
 
+void Entity::orbit(float longitude, float latitude, float radius, const ofVec3f& centerPoint)
+{
+	this->node->orbit(longitude, latitude, radius, centerPoint);
+}
+
 void Entity::move(const ofVec3f & offset)
 {
 	this->node->move(offset);

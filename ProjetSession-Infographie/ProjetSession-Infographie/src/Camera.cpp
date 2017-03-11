@@ -2,10 +2,13 @@
 
 
 
-Camera::Camera()
+Camera::Camera() :
+	longitude(0.0f), latitude(0.0f), orbitRadius(300.0f), orbitOrigin(0.0f, 0.0f, 0.0f)
 {
 	this->setAspectRatio(1.666f);
 	this->node.reset(new ofCamera);
+
+	this->orbit(longitude, latitude, orbitRadius, orbitOrigin);
 }
 
 
@@ -95,4 +98,48 @@ float Camera::getHorizontalFov()
 ofCamera & Camera::getOfCamera()
 {
 	return *(static_cast<ofCamera*>(this->node.get()));
+}
+
+float Camera::getLongitude()
+{
+	return longitude;
+}
+
+void Camera::setLongitude(float longitude)
+{
+	this->longitude = longitude;
+	this->orbit(longitude, latitude, orbitRadius, orbitOrigin);
+}
+
+float Camera::getLatitude()
+{
+	return latitude;
+}
+
+void Camera::setLatitude(float latitude)
+{
+	this->latitude = latitude;
+	this->orbit(longitude, latitude, orbitRadius, orbitOrigin);
+}
+
+float Camera::getOrbitRadius()
+{
+	return orbitRadius;
+}
+
+void Camera::setOrbitRadius(float radius)
+{
+	this->orbitRadius = radius;
+	this->orbit(longitude, latitude, radius, orbitOrigin);
+}
+
+ofVec3f Camera::getOrbitOrigin()
+{
+	return orbitOrigin;
+}
+
+void Camera::setOrbitOrigin(const ofVec3f & centerPoint)
+{
+	this->orbitOrigin = centerPoint;
+	this->orbit(longitude, latitude, orbitRadius, centerPoint);
 }
