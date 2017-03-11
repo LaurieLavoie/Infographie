@@ -39,6 +39,7 @@ public:
 
 	void lookAt(Entity& entityToLookAt);
 	void orbit(float longitude, float latitude, float radius, Entity& entityToLookAt);
+	void orbit(float longitude, float latitude, float radius, const ofVec3f& entityToLookAt);
 
 	void move(const ofVec3f& offset);
 

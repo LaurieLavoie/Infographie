@@ -41,11 +41,16 @@ void ofApp::setup()
 	cameraStartButton.addListener(this, &ofApp::cameraStartListener);
 	cameraGui.add(cameraProjectionButton.setup("Projecion"));
 	cameraProjectionButton.addListener(this, &ofApp::cameraProjectionListener);
-	cameraGui.add(cameraNearClipSlider.setup("Near clipping plane", 0.1f, 0.1f, 500.0f));
-	cameraGui.add(cameraFarClipSlider.setup("Far clipping plane", 100.0f, 0.1f, 500.0f));
+	cameraGui.add(cameraNearClipSlider.setup("Near clipping plane", 0.1f, 0.1f, 1000.0f));
+	cameraNearClipSlider.addListener(this, &ofApp::cameraNearClipListener);
+	cameraGui.add(cameraFarClipSlider.setup("Far clipping plane", 250.0f, 0.1f, 1000.0f));
+	cameraFarClipSlider.addListener(this, &ofApp::cameraFarClipListener);
 	cameraGui.add(cameraVFovSlider.setup("Vertical fov", 60.0f, 10.0f, 179.0f));
+	cameraVFovSlider.addListener(this, &ofApp::cameraVFovListener);
 	cameraGui.add(cameraHFovSlider.setup("Horizontal fov", 60.0f, 10.0f, 179.0f));
+	cameraHFovSlider.addListener(this, &ofApp::cameraHFovListener);
 	cameraGui.add(cameraAspectRatioSlider.setup("Aspect ratio", 1.666f, 0.25f, 4.0f));
+	cameraAspectRatioSlider.addListener(this, &ofApp::cameraAspectRatioListener);
 
 	renderer = new Renderer();
 	renderer->setup();
@@ -68,14 +73,17 @@ void ofApp::setup()
 	// Add dummy light
 	auto raw_light = new ofLight();
 	raw_light->enable();
-	raw_light->setAmbientColor(ofColor(250.0f, 240.0f, 220.0f) * 0.1);
+	raw_light->setAmbientColor(ofColor(250.0f, 240.0f, 220.0f) * 0.1f);
 	raw_light->setPointLight();
-	raw_light->boom(250.0f);
+	raw_light->boom(50.0f);
 	raw_light->setDiffuseColor(ofColor(250.0f, 240.0f, 220.0f));
-	std::shared_ptr<Entity> light(new Entity(raw_light)); // FIXME why is this not fixed at the camera's position? gotta investigate
+	raw_light->setSpecularColor(ofColor(250.0f, 240.0f, 220.0f));
+	std::shared_ptr<Entity> light(new Entity(raw_light));
 	scene->mainCamera.addChild(light);
 	scene->mainCamera.dolly(250.0f);
 	scene->mainCamera.boom(50.0f);
+
+	scene->mainCamera.setOrbitRadius(300.0f);
 }
 
 void ofApp::update()
@@ -93,29 +101,44 @@ void ofApp::cameraProjectionListener() {
 	scene->mainCamera.setOrtho(!scene->mainCamera.isOrtho());
 }
 
-void ofApp::cameraNearClipListener()
+void ofApp::cameraNearClipListener(float& v)
 {
-	this->scene->mainCamera.setNearClip(cameraNearClipSlider);
+	this->scene->mainCamera.setNearClip(v);
 }
 
-void ofApp::cameraFarClipListener()
+void ofApp::cameraFarClipListener(float& v)
 {
-	this->scene->mainCamera.setFarClip(cameraFarClipSlider);
+	this->scene->mainCamera.setFarClip(v);
 }
 
-void ofApp::cameraVFovListener()
+void ofApp::cameraVFovListener(float& v)
 {
-	scene->mainCamera.setVerticalFov(cameraVFovSlider);
+	scene->mainCamera.setVerticalFov(v);
+	
+	// Update HFov slider
+	cameraHFovSlider.removeListener(this, &ofApp::cameraHFovListener);
+	cameraHFovSlider = RAD_TO_DEG(Camera::VFovToHFov(DEG_TO_RAD(v), scene->mainCamera.getAspectRatio()));
+	cameraHFovSlider.addListener(this, &ofApp::cameraHFovListener);
 }
 
-void ofApp::cameraHFovListener()
+void ofApp::cameraHFovListener(float& v)
 {
-	scene->mainCamera.setHorizontalFov(cameraHFovSlider);
+	scene->mainCamera.setHorizontalFov(v);
+
+	// Update VFov slider
+	cameraVFovSlider.removeListener(this, &ofApp::cameraVFovListener);
+	cameraVFovSlider = RAD_TO_DEG(Camera::HFovToVFov(DEG_TO_RAD(v), scene->mainCamera.getAspectRatio()));
+	cameraVFovSlider.addListener(this, &ofApp::cameraVFovListener);
 }
 
-void ofApp::cameraAspectRatioListener()
+void ofApp::cameraAspectRatioListener(float& v)
 {
-	scene->mainCamera.setAspectRatio(cameraAspectRatioSlider);
+	scene->mainCamera.setAspectRatio(v);
+
+	// Update HFov slider
+	cameraHFovSlider.removeListener(this, &ofApp::cameraHFovListener);
+	cameraHFovSlider = RAD_TO_DEG(Camera::VFovToHFov(DEG_TO_RAD(scene->mainCamera.getVerticalFov()), scene->mainCamera.getAspectRatio()));
+	cameraHFovSlider.addListener(this, &ofApp::cameraHFovListener);
 }
 
 void ofApp::translationListener()
@@ -187,13 +210,15 @@ void ofApp::lineListener() {
 
 void ofApp::draw()
 {
-	ofClear(50.0f, 50.0f, 125.0f);
+	ofClear(50.0f, 50.0f, 250.0f);
 
 	renderer->draw();
 
 
 	if (scene != nullptr)
 	{
+		ofSetColor(255);
+
 		ofEnableLighting();
 		ofEnableDepthTest();
 
@@ -223,12 +248,28 @@ void ofApp::mouseMoved(int x, int y)
 
 void ofApp::mouseDragged(int x, int y, int button)
 {
+	auto delta_x = x - renderer->xMouseCurrent;
+	auto delta_y = y - renderer->yMouseCurrent;
+
 	renderer->xMouseCurrent = x;
 	renderer->yMouseCurrent = y;
 
 	if (renderer->modeCursor == 5)
 	{
-		scene->mainCamera.orbit(x, y, 300, scene->getRoot());
+		if (button == OF_MOUSE_BUTTON_LEFT)
+		{
+			auto longitude = scene->mainCamera.getLongitude() + delta_x;
+			auto latitude = scene->mainCamera.getLatitude() + delta_y;
+			scene->mainCamera.setLongitude(longitude);
+			scene->mainCamera.setLatitude(latitude);
+		}
+		else if(button == OF_MOUSE_BUTTON_RIGHT)
+		{
+			auto oldRadius = scene->mainCamera.getOrbitRadius();
+			auto radius = oldRadius + (delta_y * log(oldRadius) * 0.75f);
+			radius = radius <= 100.0f ? 100.0f : radius;
+			scene->mainCamera.setOrbitRadius(radius);
+		}
 	}
 
 	ofLog() << "<app::mouse drag at: (" << x << ", " << y << ") button:" << button << ">";
