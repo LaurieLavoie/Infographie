@@ -3,7 +3,10 @@
 
 #pragma once
 
+#include <stdio.h>      /* printf */
+#include <math.h>   
 #include "ofMain.h"
+
 
 enum class VectorPrimitive { NONE, PIXEL, POINT, LINE, RECTANGLE, ELLIPSE };
 
@@ -42,6 +45,7 @@ public:
 
 	VectorPrimitive drawMode;
 	StructVectorPrimitive * shape;
+	vector<int> anglesShapes;
 	int size;
 	int stride;
 	int head;
@@ -61,9 +65,14 @@ public:
 	void removeFromShape();
 	void translateShape(float xPressed, float yPressed, float xReleased, float yReleased);
 	void proportionShape(float xPressed, float yPressed, float xReleased, float yReleased);
+	void rotateShape(float xPressed, float yPressed, float xReleased, float yReleased);
+
+	bool isOnRectangle(int index, int x, int y);
 
 	bool isMouseButtonPressed;
 
+
+	
 
 
 	~Renderer();

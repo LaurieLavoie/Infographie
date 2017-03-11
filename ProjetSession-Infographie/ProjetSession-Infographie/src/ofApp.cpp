@@ -270,7 +270,7 @@ void ofApp::mouseReleased(int x, int y, int button)
 	}
 	else if (renderer->modeCursor == 3)
 	{
-
+		renderer->rotateShape(renderer->xMousePress, renderer->yMousePress, x, y);
 	}
 	else if (renderer->modeCursor == 4)
 	{

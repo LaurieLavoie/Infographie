@@ -1,7 +1,9 @@
 // IFT3100H17_Tryptique/renderer.cpp
 // Classe responsable du rendu de l'application.
 
+	/* cos */
 #include "renderer.h"
+
 
 Renderer::Renderer()
 {
@@ -37,7 +39,7 @@ void Renderer::draw()
 	image.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 
 	if (isMouseButtonPressed && drawMode != VectorPrimitive::NONE)
-	{	
+	{
 		ofSetColor(255);
 		ofSetLineWidth(3);
 		ofNoFill();
@@ -79,11 +81,22 @@ void Renderer::draw()
 			ofSetLineWidth(0);
 			c.setHsb(shape[index].fillColor[0], shape[index].fillColor[1], shape[index].fillColor[2]);
 			ofSetColor(c);
+			ofPushMatrix();
+			ofSetRectMode(OF_RECTMODE_CORNER);
+			ofTranslate(shape[index].position1[0], 0, 0);
+			ofTranslate(0, shape[index].position1[1], 0);
+			ofRotateZ(anglesShapes[index]);
+
 			drawRectangle(
-				shape[index].position1[0],
-				shape[index].position1[1],
-				shape[index].position2[0],
-				shape[index].position2[1]);
+				0,
+				0,
+				shape[index].position2[0] - shape[index].position1[0],
+				shape[index].position2[1] - shape[index].position1[1]);
+
+			ofPopMatrix();
+
+
+
 			break;
 
 		case VectorPrimitive::ELLIPSE:
@@ -137,6 +150,8 @@ void Renderer::addVectorShape(VectorPrimitive type)
 	shape[head].fillColor[2] = fillColorB;
 
 	shape[head].strokeWidth = strokeWidthDefault;
+
+	anglesShapes.push_back(0);
 
 	head = ++head >= count ? 0 : head;
 
@@ -339,6 +354,99 @@ void Renderer::proportionShape(float xPressed, float yPressed, float xReleased, 
 		{
 
 		}
+	}
+}
+
+void Renderer::rotateShape(float xPressed, float yPressed, float xReleased, float yReleased)
+{
+	int tolerance = 1;
+	int angle = 0;
+
+
+	for (index = 0; index < count; ++index)
+	{
+		if (shape[index].type == VectorPrimitive::LINE)
+		{
+			if (std::abs((xPressed - shape[index].position2[0]) / (shape[index].position2[0] - shape[index].position1[0]) - (yPressed - shape[index].position1[1]) / (shape[index].position2[1] - shape[index].position1[1])) < tolerance)
+			{
+				ofLog() << "Line here";
+
+				//shape[index].position2[0] = xReleased;
+				//shape[index].position2[1] = yReleased;
+			}
+		}
+		else if (shape[index].type == VectorPrimitive::RECTANGLE)
+		{
+
+			if (isOnRectangle(index, xPressed, yPressed))
+			{
+				ofLog() << "Rectangle here";
+				if (anglesShapes[index] == 360) {
+					anglesShapes[index] = 0;
+				}
+					anglesShapes[index] += 45;
+			}
+		}
+		else if (shape[index].type == VectorPrimitive::ELLIPSE)
+		{
+
+		}
+	}
+}
+
+bool Renderer::isOnRectangle(int index, int x, int y)
+{
+	if (anglesShapes[index] == 0) {
+		return x < shape[index].position2[0] && x > shape[index].position1[0] && y < shape[index].position2[1] && y > shape[index].position1[1];
+	}
+	else {
+		int xmin = (shape[index].position1[0] - (shape[index].position2[0] - shape[index].position1[0]));
+		int xmax = (shape[index].position2[0] + (shape[index].position2[0] - shape[index].position1[0]));
+		int ymin = (shape[index].position1[1] - (shape[index].position2[1] - shape[index].position1[1]));
+		int ymax = (shape[index].position2[1] + (shape[index].position2[1] - shape[index].position1[1]));
+		
+	/*	float x1 = shape[index].position1[0];
+		float y1 = shape[index].position1[1];
+
+		float x0 = x1;
+		float y0 = y1;
+ 
+
+		float x2 = shape[index].position2[0];
+		float y2 = shape[index].position1[1];
+
+		float x3 = shape[index].position2[0];
+		float y3 = shape[index].position2[1];
+
+		float x4 = shape[index].position1[0];
+		float y4 = shape[index].position2[1];
+
+		int angle = 360 - anglesShapes[index];
+		float x1b = x0 + (x1 - x0) * cos(angle) + (y1 - y0) *sin(angle);
+		float y1b = y0 - (x1 - x0) * sin(angle) + (y1 - y0) * cos(angle);
+
+		float x2b = x0 + (x2 - x0) * cos(angle) + (y2 - y0) *sin(angle);
+		float y2b = y0 - (x2 - x0) * sin(angle) + (y2 - y0) * cos(angle);
+
+		float x3b = x0 + (x3 - x0) * cos(angle) + (y3 - y0) *sin(angle);
+		float y3b = y0 - (x3 - x0) * sin(angle) + (y3 - y0) * cos(angle);
+
+		float x4b = x0 + (x4 - x0) * cos(angle) + (y4 - y0) *sin(angle);
+		float y4b = y0 - (x4 - x0) * sin(angle) + (y4 - y0) * cos(angle);
+
+		vector<float> xs = {x1b,x2b,x3b,x4b };
+		vector<float>  ys = {y1b,y2b,y3b,y4b };
+
+		std::sort(xs.begin(), xs.end());
+
+		std::sort(ys.begin(), ys.end());
+
+		float xmin = xs[0];
+		float xmax = xs[xs.size() - 1];
+		float ymin = ys[0];
+		float ymax = ys[ys.size() - 1];*/
+
+		return x >  xmin && x < xmax && y > ymin  && y < ymax;
 	}
 }
 
