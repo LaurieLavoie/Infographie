@@ -25,56 +25,26 @@ void Renderer::setup()
 	strokeWidthDefault = 2;
 	shape = (StructVectorPrimitive *)calloc(size, stride);
 	isMouseButtonPressed = false;
-	objModel = nullptr;
 
-	// calculer la taille de la structure commune à tous les sommets en nombre d'octets
-	int vertexBufferStride = sizeof(VertexStruct);
-
-	// calculer la taille du buffer à partir du nombre de sommets et de la taille de la structure de sommet
-	vertexBufferSize = nbrParticles * vertexBufferStride;
+	isParticlesON = false;
 
 
-	// allouer un espace mémoire de taille suffisante pour contenir les données des attributs de tous les sommets
-	vertexArray = (VertexStruct *)calloc(vertexBufferSize, vertexBufferStride);
-
-	//// assigner les données de chaque attribut pour chaque sommet
-	for (int index = 0; index < nbrParticles; ++index)
-	{
-		vertexArray[index].position[0] = 100 + index * 100;
-		vertexArray[index].position[1] = 100 + index * 100;
-		vertexArray[index].position[2] = 1;
-		vertexArray[index].normal[0] = 100;
-		vertexArray[index].normal[1] = 100;
-		vertexArray[index].normal[2] = 100;
-		vertexArray[index].texcoord[0] = 0;
-		vertexArray[index].texcoord[1] = 0;
-		vertexArray[index].color[0] = 200;
-		vertexArray[index].color[1] = 200;
-		vertexArray[index].color[2] = 200;
-		vertexArray[index].color[3] = 100;
-	}
-	glGenBuffers(1, &vertexBufferID);
-	
-
-	
 
 
 }
 void Renderer::setupParticles() {
-	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
-	glBufferData(GL_ARRAY_BUFFER, vertexBufferSize, vertexArray, GL_STATIC_DRAW);
-
-	// activer les pointeurs d'attributs
-	//glEnableVertexAttribArray(VERTEX_ATTRIBUTE_POSITION);
-	//glEnableVertexAttribArray(VERTEX_ATTRIBUTE_NORMAL);
-	//glEnableVertexAttribArray(VERTEX_ATTRIBUTE_TEXCOORD);
-	//glEnableVertexAttribArray(VERTEX_ATTRIBUTE_COLOR);
-
-
-	//glVertexAttribPointer(VERTEX_ATTRIBUTE_POSITION, 3, GL_FLOAT, GL_FALSE, 36, ((char *)NULL + (0)));
-	//glVertexAttribPointer(VERTEX_ATTRIBUTE_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(VertexStruct), (void*)offsetof(VertexStruct, normal));
-	//glVertexAttribPointer(VERTEX_ATTRIBUTE_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(VertexStruct), (void*)offsetof(VertexStruct, texcoord));
-	//glVertexAttribPointer(VERTEX_ATTRIBUTE_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(VertexStruct), (void*)offsetof(VertexStruct, color));
+	meshParticles.clear();
+	meshParticles.setMode(OF_PRIMITIVE_POINTS);
+	for (int i = 0; i < nbrParticles; i++) {
+		ofVec2f p = ofVec2f(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight()));
+		meshParticles.addVertex(p);
+		meshParticles.addColor(ofColor(ofRandom(0, 255), ofRandom(0, 255), ofRandom(0, 255)));
+	}
+	ofDisableArbTex();
+	textureParticles.loadImage("fire.jpg");
+	glPointSize(28);
+	isParticlesON = !isParticlesON;
+	
 
 
 }
@@ -89,6 +59,13 @@ void Renderer::draw()
 	// afficher l'image sur toute la surface de la fenêtre
 	image.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 
+	if (isParticlesON) {
+		ofEnableAlphaBlending();
+		ofEnablePointSprites();
+		textureParticles.getTextureReference().bind();
+		meshParticles.drawFaces();
+		textureParticles.getTextureReference().unbind();
+	}
 	if (isMouseButtonPressed && drawMode != VectorPrimitive::NONE)
 	{
 		ofSetColor(255);
@@ -172,8 +149,8 @@ void Renderer::draw()
 
 			ofPopMatrix();
 			break;
-		case VectorPrimitive::PARTICLE:
-			glDrawArrays(GL_POINTS, 0, 30);
+
+	
 		default:
 			break;
 		}

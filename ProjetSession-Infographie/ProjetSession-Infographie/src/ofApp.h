@@ -82,6 +82,7 @@ class ofApp : public ofBaseApp{
 		ofxButton modelParticleButton;
 		ofxButton modelShowPrimitivesButton;
 		ofxAssimpModelLoader * objModel;
+
 		~ofApp();
 
 	private:

@@ -87,12 +87,10 @@ public:
 	bool isOnEllipse(int index, int x, int y);
 
 	ofxAssimpModelLoader * objModel;
-	const int nbrParticles = 100;
-	const GLuint VERTEX_ATTRIBUTE_POSITION = 0;
-	const GLuint VERTEX_ATTRIBUTE_NORMAL = 1;
-	const GLuint VERTEX_ATTRIBUTE_TEXCOORD = 2;
-	const GLuint VERTEX_ATTRIBUTE_COLOR = 3;
+	bool isParticlesON;
+	const int nbrParticles = 500;
 	void setupParticles();
-	
+	ofMesh meshParticles;
+	ofImage textureParticles;
 	~Renderer();
 };

@@ -83,6 +83,8 @@ void ofApp::setup()
 	scene->mainCamera.boom(50.0f);
 
 	scene->mainCamera.setOrbitRadius(300.0f);
+
+
 }
 
 void ofApp::update()
@@ -191,7 +193,7 @@ void ofApp::modelShowPrimitivesListener() {
 
 void ofApp::modelParticleListener() {
 	renderer->setupParticles();
-	renderer->drawMode = VectorPrimitive::PARTICLE;
+	
 }
 
 
@@ -222,6 +224,7 @@ void ofApp::lineListener() {
 
 void ofApp::draw()
 {
+
 	ofClear(50.0f, 50.0f, 250.0f);
 
 	renderer->draw();
