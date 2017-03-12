@@ -52,6 +52,13 @@ void ofApp::setup()
 	cameraGui.add(cameraAspectRatioSlider.setup("Aspect ratio", 1.666f, 0.25f, 4.0f));
 	cameraAspectRatioSlider.addListener(this, &ofApp::cameraAspectRatioListener);
 
+	modelGui.setup();
+	modelGui.setPosition(420, 10);
+	modelGui.add(modelParticleButton.setup("Particles"));
+	modelParticleButton.addListener(this, &ofApp::modelParticleListener);
+	modelGui.add(modelShowPrimitivesButton.setup("Show Primitives"));
+	modelShowPrimitivesButton.addListener(this, &ofApp::modelShowPrimitivesListener);
+
 	renderer = new Renderer();
 	renderer->setup();
 
@@ -60,15 +67,7 @@ void ofApp::setup()
 	ofEnableAlphaBlending();
 
 	// Add dummy mesh for tests
-	auto raw_dummy = new ofCylinderPrimitive;
-	std::shared_ptr<Entity> dummy(new Entity(raw_dummy));
-	dummy->dolly(100.0f);
-	scene->getRoot().addChild(dummy);
-
-	auto raw_dummy2 = new ofCylinderPrimitive;
-	std::shared_ptr<Entity> dummy2(new Entity(raw_dummy2));
-	dummy2->dolly(-100.0f);
-	dummy->addChild(dummy2);
+	objModel = nullptr;
 
 	// Add dummy light
 	auto raw_light = new ofLight();
@@ -180,8 +179,21 @@ void ofApp::importListener() {
 		{
 			renderer->imageImport(path);
 		}
+		else if (path.find(".obj") != std::string::npos) {
+			objModel = new ofxAssimpModelLoader();
+			objModel->loadModel(path);
+		}
 	}
 }
+void ofApp::modelShowPrimitivesListener() {
+
+}
+
+void ofApp::modelParticleListener() {
+	renderer->setupParticles();
+	renderer->drawMode = VectorPrimitive::PARTICLE;
+}
+
 
 void ofApp::circleListener() {
 	renderer->modeCursor = 1;
@@ -226,9 +238,12 @@ void ofApp::draw()
 		renderer->image.getTexture().bind();
 		scene->mainCamera.draw();
 		scene->getRoot().draw();
+		if (objModel != nullptr) {
+			objModel->draw(OF_MESH_FILL);
+		}
 		renderer->image.getTexture().unbind();
 		scene->mainCamera.getOfCamera().end();
-
+		
 		ofDisableDepthTest();
 		ofDisableLighting();
 	}
@@ -236,6 +251,7 @@ void ofApp::draw()
 
 	gui.draw();
 	cameraGui.draw();
+	modelGui.draw();
 }
 
 void ofApp::mouseMoved(int x, int y)

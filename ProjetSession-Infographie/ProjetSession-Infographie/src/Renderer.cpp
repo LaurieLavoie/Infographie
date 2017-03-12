@@ -25,8 +25,59 @@ void Renderer::setup()
 	strokeWidthDefault = 2;
 	shape = (StructVectorPrimitive *)calloc(size, stride);
 	isMouseButtonPressed = false;
-}
+	objModel = nullptr;
 
+	// calculer la taille de la structure commune à tous les sommets en nombre d'octets
+	int vertexBufferStride = sizeof(VertexStruct);
+
+	// calculer la taille du buffer à partir du nombre de sommets et de la taille de la structure de sommet
+	vertexBufferSize = nbrParticles * vertexBufferStride;
+
+
+	// allouer un espace mémoire de taille suffisante pour contenir les données des attributs de tous les sommets
+	vertexArray = (VertexStruct *)calloc(vertexBufferSize, vertexBufferStride);
+
+	//// assigner les données de chaque attribut pour chaque sommet
+	for (int index = 0; index < nbrParticles; ++index)
+	{
+		vertexArray[index].position[0] = 100 + index * 100;
+		vertexArray[index].position[1] = 100 + index * 100;
+		vertexArray[index].position[2] = 1;
+		vertexArray[index].normal[0] = 100;
+		vertexArray[index].normal[1] = 100;
+		vertexArray[index].normal[2] = 100;
+		vertexArray[index].texcoord[0] = 0;
+		vertexArray[index].texcoord[1] = 0;
+		vertexArray[index].color[0] = 200;
+		vertexArray[index].color[1] = 200;
+		vertexArray[index].color[2] = 200;
+		vertexArray[index].color[3] = 100;
+	}
+	glGenBuffers(1, &vertexBufferID);
+	
+
+	
+
+
+}
+void Renderer::setupParticles() {
+	glBindBuffer(GL_ARRAY_BUFFER, vertexBufferID);
+	glBufferData(GL_ARRAY_BUFFER, vertexBufferSize, vertexArray, GL_STATIC_DRAW);
+
+	// activer les pointeurs d'attributs
+	//glEnableVertexAttribArray(VERTEX_ATTRIBUTE_POSITION);
+	//glEnableVertexAttribArray(VERTEX_ATTRIBUTE_NORMAL);
+	//glEnableVertexAttribArray(VERTEX_ATTRIBUTE_TEXCOORD);
+	//glEnableVertexAttribArray(VERTEX_ATTRIBUTE_COLOR);
+
+
+	//glVertexAttribPointer(VERTEX_ATTRIBUTE_POSITION, 3, GL_FLOAT, GL_FALSE, 36, ((char *)NULL + (0)));
+	//glVertexAttribPointer(VERTEX_ATTRIBUTE_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(VertexStruct), (void*)offsetof(VertexStruct, normal));
+	//glVertexAttribPointer(VERTEX_ATTRIBUTE_TEXCOORD, 2, GL_FLOAT, GL_FALSE, sizeof(VertexStruct), (void*)offsetof(VertexStruct, texcoord));
+	//glVertexAttribPointer(VERTEX_ATTRIBUTE_COLOR, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(VertexStruct), (void*)offsetof(VertexStruct, color));
+
+
+}
 void Renderer::draw()
 {
 	// couleur de l'arrière-plan
@@ -120,7 +171,9 @@ void Renderer::draw()
 				shape[index].position2[1] - shape[index].position1[1]);
 
 			ofPopMatrix();
-
+			break;
+		case VectorPrimitive::PARTICLE:
+			glDrawArrays(GL_POINTS, 0, 30);
 		default:
 			break;
 		}
@@ -142,6 +195,12 @@ void Renderer::imageExport(const string name, const string extension) const
 void Renderer::imageImport(string path) {
 	image.load(path);
 	ofSetWindowShape(image.getWidth(), image.getHeight());
+}
+
+void Renderer::objImport(string path) {
+	objModel = new ofxAssimpModelLoader();
+	objModel->loadModel(path);
+
 }
 
 void Renderer::addVectorShape(VectorPrimitive type)
@@ -490,4 +549,5 @@ bool Renderer::isOnRectangle(int index, int x, int y)
 
 Renderer::~Renderer()
 {
+	delete objModel;
 }

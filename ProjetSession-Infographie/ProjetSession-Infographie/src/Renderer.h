@@ -6,9 +6,9 @@
 #include <stdio.h>      /* printf */
 #include <math.h>   
 #include "ofMain.h"
+#include "ofxAssimpModelLoader.h"
 
-
-enum class VectorPrimitive { NONE, PIXEL, POINT, LINE, RECTANGLE, ELLIPSE };
+enum class VectorPrimitive { NONE, PIXEL, POINT, LINE, RECTANGLE, ELLIPSE, PARTICLE };
 
 typedef struct
 {
@@ -20,6 +20,13 @@ typedef struct
 	unsigned char fillColor[4]; // 4 * 1 = 4  octets
 } StructVectorPrimitive;         //       = 32 octets
 
+typedef struct 
+{
+	GLfloat position[3]; // 3 * 4 = 12 octets
+	GLfloat normal[3]; // 3 * 4 = 12 octets
+	GLfloat texcoord[2]; // 2 * 4 = 8  octets
+	GLubyte color[4]; // 4 * 1 = 4  octets
+} VertexStruct; // = 36 octets
 
 class Renderer
 {
@@ -29,6 +36,7 @@ public:
 	ofImage image;
 	void imageExport(const string name, const string extension) const;
 	void imageImport(string path);
+	void objImport(string path);
 	void setup();
 	void draw();
 
@@ -45,6 +53,9 @@ public:
 
 	VectorPrimitive drawMode;
 	StructVectorPrimitive * shape;
+	VertexStruct * vertexArray;
+	GLuint vertexBufferID;
+	int vertexBufferSize;
 	vector<int> anglesShapes;
 	int size;
 	int stride;
@@ -75,7 +86,13 @@ public:
 
 	bool isOnEllipse(int index, int x, int y);
 
-
-
+	ofxAssimpModelLoader * objModel;
+	const int nbrParticles = 100;
+	const GLuint VERTEX_ATTRIBUTE_POSITION = 0;
+	const GLuint VERTEX_ATTRIBUTE_NORMAL = 1;
+	const GLuint VERTEX_ATTRIBUTE_TEXCOORD = 2;
+	const GLuint VERTEX_ATTRIBUTE_COLOR = 3;
+	void setupParticles();
+	
 	~Renderer();
 };

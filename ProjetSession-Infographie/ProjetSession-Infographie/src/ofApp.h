@@ -5,7 +5,7 @@
 #include "ofMain.h"
 #include "ofxGui.h"
 #include "Renderer.h"
-
+#include "ofxAssimpModelLoader.h"
 #include "Scene.h"
 
 class ofApp : public ofBaseApp{
@@ -33,7 +33,8 @@ class ofApp : public ofBaseApp{
 		void colorListener();
 		void exportListener();
 		void importListener();
-
+		void modelShowPrimitivesListener();
+		void modelParticleListener();
 		bool isLine;
 
 		ofxPanel gui;
@@ -77,7 +78,10 @@ class ofApp : public ofBaseApp{
 		ofxFloatSlider cameraVFovSlider;
 		ofxFloatSlider cameraHFovSlider;
 		ofxFloatSlider cameraAspectRatioSlider;
-
+		ofxPanel modelGui;
+		ofxButton modelParticleButton;
+		ofxButton modelShowPrimitivesButton;
+		ofxAssimpModelLoader * objModel;
 		~ofApp();
 
 	private:
