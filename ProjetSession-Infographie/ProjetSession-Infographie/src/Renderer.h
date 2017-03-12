@@ -88,9 +88,12 @@ public:
 
 	ofxAssimpModelLoader * objModel;
 	bool isParticlesON;
+	bool isProceduralGeometryON;
 	const int nbrParticles = 500;
 	void setupParticles();
+	void setupProceduralGeometry();
 	ofMesh meshParticles;
+	ofMesh meshProceduralGeometry;
 	ofImage textureParticles;
 	~Renderer();
 };

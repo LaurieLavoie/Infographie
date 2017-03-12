@@ -27,7 +27,7 @@ void Renderer::setup()
 	isMouseButtonPressed = false;
 
 	isParticlesON = false;
-
+	isProceduralGeometryON = false;
 
 
 
@@ -38,15 +38,33 @@ void Renderer::setupParticles() {
 	for (int i = 0; i < nbrParticles; i++) {
 		ofVec2f p = ofVec2f(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight()));
 		meshParticles.addVertex(p);
-		meshParticles.addColor(ofColor(ofRandom(0, 255), ofRandom(0, 255), ofRandom(0, 255)));
+		meshParticles.addColor(ofColor(255,255,255));
 	}
 	ofDisableArbTex();
 	textureParticles.loadImage("fire.jpg");
 	glPointSize(28);
 	isParticlesON = !isParticlesON;
-	
+	isProceduralGeometryON = !isProceduralGeometryON;
 
 
+}
+void Renderer::setupProceduralGeometry() {
+	isProceduralGeometryON = !isProceduralGeometryON;
+	if (isProceduralGeometryON) {
+		meshProceduralGeometry.setMode(OF_PRIMITIVE_POINTS);
+		
+		int w = image.getWidth();
+		int h = image.getHeight();
+		for (int x = 0; x<w; ++x) {
+			for (int y = 0; y<h; ++y) {
+				ofColor c = image.getColor(x, y);
+				float intensity = c.getLightness();
+				ofVec3f pos(x, y, intensity * 10);
+				meshProceduralGeometry.addVertex(pos);
+				meshProceduralGeometry.addColor(ofColor(c));
+			}
+		}
+	}
 }
 void Renderer::draw()
 {
@@ -59,13 +77,18 @@ void Renderer::draw()
 	// afficher l'image sur toute la surface de la fenêtre
 	image.draw(0, 0, ofGetWindowWidth(), ofGetWindowHeight());
 
-	if (isParticlesON) {
-		ofEnableAlphaBlending();
-		ofEnablePointSprites();
-		textureParticles.getTextureReference().bind();
-		meshParticles.drawFaces();
-		textureParticles.getTextureReference().unbind();
-	}
+	//if (isParticlesON) {
+	//	ofEnableAlphaBlending();
+	//	ofEnablePointSprites();
+	//	textureParticles.getTextureReference().bind();
+	//	meshParticles.drawFaces();
+	//	textureParticles.getTextureReference().unbind();
+	//}
+	//
+	//if (isProceduralGeometryON) {
+	//	meshProceduralGeometry.draw();
+	//}
+
 	if (isMouseButtonPressed && drawMode != VectorPrimitive::NONE)
 	{
 		ofSetColor(255);

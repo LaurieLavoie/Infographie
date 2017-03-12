@@ -56,7 +56,7 @@ void ofApp::setup()
 	modelGui.setPosition(420, 10);
 	modelGui.add(modelParticleButton.setup("Particles"));
 	modelParticleButton.addListener(this, &ofApp::modelParticleListener);
-	modelGui.add(modelShowPrimitivesButton.setup("Show Primitives"));
+	modelGui.add(modelShowPrimitivesButton.setup("Procedural Geometry"));
 	modelShowPrimitivesButton.addListener(this, &ofApp::modelShowPrimitivesListener);
 
 	renderer = new Renderer();
@@ -188,7 +188,7 @@ void ofApp::importListener() {
 	}
 }
 void ofApp::modelShowPrimitivesListener() {
-
+	renderer->setupProceduralGeometry();
 }
 
 void ofApp::modelParticleListener() {
@@ -244,11 +244,21 @@ void ofApp::draw()
 		if (objModel != nullptr) {
 			objModel->draw(OF_MESH_FILL);
 		}
-		renderer->image.getTexture().unbind();
-		scene->mainCamera.getOfCamera().end();
-		
-		ofDisableDepthTest();
 		ofDisableLighting();
+		renderer->image.getTexture().unbind();
+		ofDisableDepthTest();
+		if (renderer->isProceduralGeometryON) {
+			renderer->meshProceduralGeometry.draw();
+		}
+		if (renderer->isParticlesON) {
+			ofEnableAlphaBlending();
+			ofEnablePointSprites();
+			renderer->textureParticles.getTextureReference().bind();
+			renderer->meshParticles.drawFaces();
+			renderer->textureParticles.getTextureReference().unbind();
+		}
+		scene->mainCamera.getOfCamera().end();
+
 	}
 
 
