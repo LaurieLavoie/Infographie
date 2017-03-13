@@ -49,10 +49,11 @@ void Renderer::setupParticles() {
 
 }
 void Renderer::setupProceduralGeometry() {
+	meshProceduralGeometry.clear();
+	meshProceduralGeometry.setMode(OF_PRIMITIVE_POINTS);
 	isProceduralGeometryON = !isProceduralGeometryON;
 	if (isProceduralGeometryON) {
-		meshProceduralGeometry.setMode(OF_PRIMITIVE_POINTS);
-		
+			
 		int w = image.getWidth();
 		int h = image.getHeight();
 		for (int x = 0; x<w; ++x) {
