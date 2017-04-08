@@ -104,7 +104,8 @@ public:
 	Renderer(ofShader sshaderColor, ofShader sshaderGeo);
 	void setup();
 	void draw();
-
+	ofShader shaderColor;
+	ofShader shaderGeo;
 	void drawZone(float x1, float y1, float x2, float y2) const;
 	void drawCursor(float x, float y) const;
 
@@ -185,5 +186,6 @@ public:
 	int framebufferWidth;
 	int framebufferHeight;
 	int indexCurb;
+	
 	~Renderer();
 };
