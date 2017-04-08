@@ -1,4 +1,4 @@
-#include "ofApp.h"
+﻿#include "ofApp.h"
 
 ofApp::ofApp()
 {
@@ -7,6 +7,12 @@ ofApp::ofApp()
 
 void ofApp::setup()
 {
+	/*isKeyPressUp = false;
+	isKeyPressDown = false;
+	isKeyPressLeft = false;
+	isKeyPressRight = false;
+*/
+	indexPointCurb = 0;
 
 	ofSetWindowTitle("Projet session");
 
@@ -59,6 +65,13 @@ void ofApp::setup()
 	modelGui.add(modelShowPrimitivesButton.setup("Procedural Geometry"));
 	modelShowPrimitivesButton.addListener(this, &ofApp::modelShowPrimitivesListener);
 
+	curbGui.setup();
+	curbGui.setPosition(610, 10);
+	curbGui.add(hermiteButton.setup("Hermite"));
+	hermiteButton.addListener(this, &ofApp::hermiteListener);
+	curbGui.add(bezierButton.setup("Bezier"));
+	bezierButton.addListener(this, &ofApp::bezierListener);
+
 	renderer = new Renderer();
 	renderer->setup();
 
@@ -92,9 +105,19 @@ void ofApp::update()
 
 }
 
+void ofApp::hermiteListener() {
+	renderer->curveID = Curve::HERMITE;
+
+}
+
+void ofApp::bezierListener() {
+	renderer->curveID = Curve::BEZIER_CUBIC;
+}
+
 void ofApp::cameraStartListener() {
 	renderer->modeCursor = 5;
 }
+
 
 void ofApp::cameraProjectionListener() {
 	if (scene == nullptr) return;
@@ -265,6 +288,7 @@ void ofApp::draw()
 	gui.draw();
 	cameraGui.draw();
 	modelGui.draw();
+	curbGui.draw();
 }
 
 void ofApp::mouseMoved(int x, int y)
@@ -346,6 +370,34 @@ void ofApp::mouseReleased(int x, int y, int button)
 	{
 		renderer->proportionShape(renderer->xMousePress, renderer->yMousePress, x, y);
 	}
+
+	if (renderer->curveID != Curve::NONE)
+	{
+		if (indexPointCurb == 0)
+		{
+			renderer->selectedCtrlPoint = &renderer->ctrlPoint1;
+			renderer->ctrlPoint1 = { (float)x, (float)y, 0 };
+			indexPointCurb = indexPointCurb + 1;
+		}
+		else if (indexPointCurb == 1)
+		{
+			renderer->selectedCtrlPoint = &renderer->ctrlPoint2;
+			renderer->ctrlPoint2 = { (float)x, (float)y, 0 };
+			indexPointCurb = indexPointCurb + 1;
+		}
+		else if (indexPointCurb == 2)
+		{
+			renderer->selectedCtrlPoint = &renderer->ctrlPoint3;
+			renderer->ctrlPoint3 = { (float)x, (float)y, 0 };
+			indexPointCurb = indexPointCurb + 1;
+		}
+		else if (indexPointCurb == 3)
+		{
+			renderer->selectedCtrlPoint = &renderer->ctrlPoint4;
+			renderer->ctrlPoint4 = { (float)x, (float)y, 0 };
+			indexPointCurb = 0;
+		}
+	}
 	
 	ofLog() << "<app::mouse released at: (" << x << ", " << y << ")>";
 }
@@ -366,22 +418,27 @@ void ofApp::mouseExited(int x, int y)
 	ofLog() << "<app::mouse exited   at: (" << x << ", " << y << ")>";
 }
 
+
 void ofApp::keyReleased(int key) {
 
-	if (key == 114) {	//key r
-		// Redo
+	switch (key)
+	{
+	case 114: //key r
 		ofLog() << "Key R released";
-		renderer->addToShape(renderer->xMousePress +5, renderer->yMousePress +5, lastMouseReleasedX + 5, lastMouseReleasedY + 5, renderer->fillColorH, renderer->fillColorS, renderer->fillColorB, renderer->drawMode);
+		renderer->addToShape(renderer->xMousePress + 5, renderer->yMousePress + 5, lastMouseReleasedX + 5, lastMouseReleasedY + 5, renderer->fillColorH, renderer->fillColorS, renderer->fillColorB, renderer->drawMode);
 		renderer->xMousePress = renderer->xMousePress + 5;
 		renderer->yMousePress = renderer->yMousePress + 5;
 		renderer->xMouseCurrent = lastMouseReleasedX + 5;
 		renderer->yMouseCurrent = lastMouseReleasedY + 5;
-	}
-	else if (key == 117) {
-		// Undo
+		break;
+
+	case 117:
 		renderer->removeFromShape();
 		ofLog() << "Key U released";
+		break;
 
+	default:
+		break;
 	}
 }
 

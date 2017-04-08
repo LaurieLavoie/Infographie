@@ -29,7 +29,21 @@ void Renderer::setup()
 	isParticlesON = false;
 	isProceduralGeometryON = false;
 
+	lineResolution = 100;
 
+	radius = 32.0f;
+	scale = 10.0f;
+	offset = 64.0f;
+
+	lineWidthOutline = 4.0f;
+	lineWidthCurve = 8.0f;
+
+	motionSpeed = 250.0f;
+
+	for (indexCurb = 0; indexCurb <= lineResolution; ++indexCurb)
+		lineRenderer.addVertex(ofPoint());
+
+	curveID = Curve::NONE;
 
 }
 void Renderer::setupParticles() {
@@ -180,6 +194,81 @@ void Renderer::draw()
 		}
 	}
 
+	if (curveID != Curve::NONE)
+	{
+		ofSetColor(63, 63, 63);
+
+		ofDrawEllipse(initialPosition1.x, initialPosition1.y, radius / 2, radius / 2);
+		ofDrawEllipse(initialPosition2.x, initialPosition2.y, radius / 2, radius / 2);
+		ofDrawEllipse(initialPosition3.x, initialPosition3.y, radius / 2, radius / 2);
+		ofDrawEllipse(initialPosition4.x, initialPosition4.y, radius / 2, radius / 2);
+		ofDrawEllipse(initialPosition5.x, initialPosition5.y, radius / 2, radius / 2);
+
+		// dessiner la ligne contour
+		ofSetColor(0, 0, 255);
+		ofSetLineWidth(lineWidthOutline);
+
+		ofDrawLine(ctrlPoint1.x, ctrlPoint1.y, ctrlPoint2.x, ctrlPoint2.y);
+		ofDrawLine(ctrlPoint3.x, ctrlPoint3.y, ctrlPoint4.x, ctrlPoint4.y);
+
+		if (curveID == Curve::BEZIER_CUBIC)
+		{
+			ofDrawLine(ctrlPoint2.x, ctrlPoint2.y, ctrlPoint3.x, ctrlPoint3.y);
+			ofDrawLine(ctrlPoint4.x, ctrlPoint4.y, ctrlPoint1.x, ctrlPoint1.y);
+		}
+
+		// dessiner la courbe
+		ofSetColor(0, 255, 0);
+		ofSetLineWidth(lineWidthCurve);
+
+		lineRenderer.draw();
+
+		// dessiner les points de contrôle
+		ofSetColor(255, 0, 0);
+
+		ofDrawEllipse(ctrlPoint1.x, ctrlPoint1.y, radius, radius);
+		ofDrawEllipse(ctrlPoint2.x, ctrlPoint2.y, radius, radius);
+		ofDrawEllipse(ctrlPoint3.x, ctrlPoint3.y, radius, radius);
+		ofDrawEllipse(ctrlPoint4.x, ctrlPoint4.y, radius, radius);
+
+		ofVec3f tangent1 = ctrlPoint2 - ctrlPoint1;
+		ofVec3f tangent2 = ctrlPoint3 - ctrlPoint4;
+
+		for (index = 0; index <= lineResolution; ++index)
+		{
+			// paramètres selon le type de courbe
+			switch (curveID)
+			{
+			case Curve::HERMITE:
+
+				hermite(
+					index / (float)lineResolution,
+					ctrlPoint1.x, ctrlPoint1.y, ctrlPoint1.z,
+					tangent1.x, tangent1.y, tangent1.z,
+					tangent2.x, tangent2.y, tangent2.z,
+					ctrlPoint4.x, ctrlPoint4.y, ctrlPoint4.z,
+					position.x, position.y, position.z);
+				break;
+
+			case Curve::BEZIER_CUBIC:
+				bezierCubic(
+					index / (float)lineResolution,
+					ctrlPoint1.x, ctrlPoint1.y, ctrlPoint1.z,
+					ctrlPoint2.x, ctrlPoint2.y, ctrlPoint2.z,
+					ctrlPoint3.x, ctrlPoint3.y, ctrlPoint3.z,
+					ctrlPoint4.x, ctrlPoint4.y, ctrlPoint4.z,
+					position.x, position.y, position.z);
+				break;
+
+			default:
+				break;
+			}
+			// affecter la position du point sur la courbe
+			lineRenderer[index] = position;
+		}
+	}
+
+	drawCurb();
 }
 
 
@@ -546,6 +635,41 @@ bool Renderer::isOnRectangle(int index, int x, int y)
 
 		return x >  xmin && x < xmax && y > ymin  && y < ymax;
 	}
+}
+
+void Renderer::drawCurb()
+{
+	// dessiner les positions initiales
+	ofSetColor(63, 63, 63);
+
+	ofDrawEllipse(initialPosition1.x, initialPosition1.y, radius / 2, radius / 2);
+	ofDrawEllipse(initialPosition2.x, initialPosition2.y, radius / 2, radius / 2);
+	ofDrawEllipse(initialPosition3.x, initialPosition3.y, radius / 2, radius / 2);
+	ofDrawEllipse(initialPosition4.x, initialPosition4.y, radius / 2, radius / 2);
+	ofDrawEllipse(initialPosition5.x, initialPosition5.y, radius / 2, radius / 2);
+
+	// dessiner la ligne contour
+	ofSetColor(0, 0, 255);
+	ofSetLineWidth(lineWidthOutline);
+
+	ofDrawLine(ctrlPoint1.x, ctrlPoint1.y, ctrlPoint2.x, ctrlPoint2.y);
+	ofDrawLine(ctrlPoint2.x, ctrlPoint2.y, ctrlPoint3.x, ctrlPoint3.y);
+	ofDrawLine(ctrlPoint3.x, ctrlPoint3.y, ctrlPoint4.x, ctrlPoint4.y);
+	ofDrawLine(ctrlPoint4.x, ctrlPoint4.y, ctrlPoint1.x, ctrlPoint1.y);
+
+	// dessiner la courbe
+	ofSetColor(0, 255, 0);
+	ofSetLineWidth(lineWidthCurve);
+
+	lineRenderer.draw();
+
+	// dessiner les points de contrôle
+	ofSetColor(255, 0, 0);
+
+	ofDrawEllipse(ctrlPoint1.x, ctrlPoint1.y, radius, radius);
+	ofDrawEllipse(ctrlPoint2.x, ctrlPoint2.y, radius, radius);
+	ofDrawEllipse(ctrlPoint3.x, ctrlPoint3.y, radius, radius);
+	ofDrawEllipse(ctrlPoint4.x, ctrlPoint4.y, radius, radius);
 }
 
 Renderer::~Renderer()

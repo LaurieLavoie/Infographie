@@ -37,6 +37,11 @@ class ofApp : public ofBaseApp{
 		void modelParticleListener();
 		bool isLine;
 
+		bool isKeyPressUp;
+		bool isKeyPressDown;
+		bool isKeyPressLeft;
+		bool isKeyPressRight;
+
 		ofxPanel gui;
 
 		ofxIntSlider hue;
@@ -82,6 +87,13 @@ class ofApp : public ofBaseApp{
 		ofxButton modelParticleButton;
 		ofxButton modelShowPrimitivesButton;
 		ofxAssimpModelLoader * objModel;
+
+		ofxPanel curbGui;
+		ofxButton hermiteButton;
+		ofxButton bezierButton;
+		void hermiteListener();
+		void bezierListener();
+		int indexPointCurb;
 
 		~ofApp();
 
