@@ -48,7 +48,7 @@ inline void bezierCubic(
 	z = uuu * p1z + 3 * uu * t * p2z + 3 * u * tt * p3z + ttt * p4z;
 }
 
-enum class Curve { BEZIER_CUBIC, HERMITE, NONE };
+enum class Curve { BEZIER_CUBIC, HERMITE, CATMULL, SPLINE, NONE };
 
 // fonction d'évaluation d'une courbe de hermite (4 points de contrôle)
 inline void hermite(
@@ -120,7 +120,6 @@ public:
 	void translateShape(float xPressed, float yPressed, float xReleased, float yReleased);
 	void proportionShape(float xPressed, float yPressed, float xReleased, float yReleased);
 	void rotateShape(float xPressed, float yPressed, float xReleased, float yReleased);
-	void drawCurb();
 
 	bool isOnRectangle(int index, int x, int y);
 
@@ -141,18 +140,12 @@ public:
 	ofImage textureParticles;
 
 	Curve curveID;
-	string  curveName;
 	ofPolyline lineRenderer;
 	ofVec3f * selectedCtrlPoint;
 	ofVec3f ctrlPoint1;
 	ofVec3f ctrlPoint2;
 	ofVec3f ctrlPoint3;
 	ofVec3f ctrlPoint4;
-	ofVec3f initialPosition1;
-	ofVec3f initialPosition2;
-	ofVec3f initialPosition3;
-	ofVec3f initialPosition4;
-	ofVec3f initialPosition5;
 	ofVec3f position;
 	int lineResolution;
 	float radius;

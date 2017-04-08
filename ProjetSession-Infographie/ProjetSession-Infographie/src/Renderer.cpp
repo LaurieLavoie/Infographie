@@ -198,24 +198,15 @@ void Renderer::draw()
 	{
 		ofSetColor(63, 63, 63);
 
-		ofDrawEllipse(initialPosition1.x, initialPosition1.y, radius / 2, radius / 2);
-		ofDrawEllipse(initialPosition2.x, initialPosition2.y, radius / 2, radius / 2);
-		ofDrawEllipse(initialPosition3.x, initialPosition3.y, radius / 2, radius / 2);
-		ofDrawEllipse(initialPosition4.x, initialPosition4.y, radius / 2, radius / 2);
-		ofDrawEllipse(initialPosition5.x, initialPosition5.y, radius / 2, radius / 2);
-
 		// dessiner la ligne contour
 		ofSetColor(0, 0, 255);
 		ofSetLineWidth(lineWidthOutline);
 
 		ofDrawLine(ctrlPoint1.x, ctrlPoint1.y, ctrlPoint2.x, ctrlPoint2.y);
 		ofDrawLine(ctrlPoint3.x, ctrlPoint3.y, ctrlPoint4.x, ctrlPoint4.y);
-
-		if (curveID == Curve::BEZIER_CUBIC)
-		{
 			ofDrawLine(ctrlPoint2.x, ctrlPoint2.y, ctrlPoint3.x, ctrlPoint3.y);
 			ofDrawLine(ctrlPoint4.x, ctrlPoint4.y, ctrlPoint1.x, ctrlPoint1.y);
-		}
+
 
 		// dessiner la courbe
 		ofSetColor(0, 255, 0);
@@ -267,8 +258,6 @@ void Renderer::draw()
 			lineRenderer[index] = position;
 		}
 	}
-
-	drawCurb();
 }
 
 
@@ -637,40 +626,6 @@ bool Renderer::isOnRectangle(int index, int x, int y)
 	}
 }
 
-void Renderer::drawCurb()
-{
-	// dessiner les positions initiales
-	ofSetColor(63, 63, 63);
-
-	ofDrawEllipse(initialPosition1.x, initialPosition1.y, radius / 2, radius / 2);
-	ofDrawEllipse(initialPosition2.x, initialPosition2.y, radius / 2, radius / 2);
-	ofDrawEllipse(initialPosition3.x, initialPosition3.y, radius / 2, radius / 2);
-	ofDrawEllipse(initialPosition4.x, initialPosition4.y, radius / 2, radius / 2);
-	ofDrawEllipse(initialPosition5.x, initialPosition5.y, radius / 2, radius / 2);
-
-	// dessiner la ligne contour
-	ofSetColor(0, 0, 255);
-	ofSetLineWidth(lineWidthOutline);
-
-	ofDrawLine(ctrlPoint1.x, ctrlPoint1.y, ctrlPoint2.x, ctrlPoint2.y);
-	ofDrawLine(ctrlPoint2.x, ctrlPoint2.y, ctrlPoint3.x, ctrlPoint3.y);
-	ofDrawLine(ctrlPoint3.x, ctrlPoint3.y, ctrlPoint4.x, ctrlPoint4.y);
-	ofDrawLine(ctrlPoint4.x, ctrlPoint4.y, ctrlPoint1.x, ctrlPoint1.y);
-
-	// dessiner la courbe
-	ofSetColor(0, 255, 0);
-	ofSetLineWidth(lineWidthCurve);
-
-	lineRenderer.draw();
-
-	// dessiner les points de contrôle
-	ofSetColor(255, 0, 0);
-
-	ofDrawEllipse(ctrlPoint1.x, ctrlPoint1.y, radius, radius);
-	ofDrawEllipse(ctrlPoint2.x, ctrlPoint2.y, radius, radius);
-	ofDrawEllipse(ctrlPoint3.x, ctrlPoint3.y, radius, radius);
-	ofDrawEllipse(ctrlPoint4.x, ctrlPoint4.y, radius, radius);
-}
 
 Renderer::~Renderer()
 {

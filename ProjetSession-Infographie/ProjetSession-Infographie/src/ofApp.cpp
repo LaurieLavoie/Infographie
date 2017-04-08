@@ -59,7 +59,7 @@ void ofApp::setup()
 	cameraAspectRatioSlider.addListener(this, &ofApp::cameraAspectRatioListener);
 
 	modelGui.setup();
-	modelGui.setPosition(420, 10);
+	modelGui.setPosition(410, 10);
 	modelGui.add(modelParticleButton.setup("Particles"));
 	modelParticleButton.addListener(this, &ofApp::modelParticleListener);
 	modelGui.add(modelShowPrimitivesButton.setup("Procedural Geometry"));
@@ -71,6 +71,10 @@ void ofApp::setup()
 	hermiteButton.addListener(this, &ofApp::hermiteListener);
 	curbGui.add(bezierButton.setup("Bezier"));
 	bezierButton.addListener(this, &ofApp::bezierListener);
+	curbGui.add(splineButton.setup("Spline bezier"));
+	splineButton.addListener(this, &ofApp::splineListener);
+	curbGui.add(catmullButton.setup("Catmull-Rom"));
+	catmullButton.addListener(this, &ofApp::catmullListener);
 
 	renderer = new Renderer();
 	renderer->setup();
@@ -107,11 +111,23 @@ void ofApp::update()
 
 void ofApp::hermiteListener() {
 	renderer->curveID = Curve::HERMITE;
-
+	indexPointCurb = 0;
 }
 
 void ofApp::bezierListener() {
-	renderer->curveID = Curve::BEZIER_CUBIC;
+
+		renderer->curveID = Curve::BEZIER_CUBIC;
+		indexPointCurb = 0;
+}
+
+void ofApp::splineListener() {
+	renderer->curveID = Curve::SPLINE;
+	indexPointCurb = 0;
+}
+
+void ofApp::catmullListener() {
+	renderer->curveID = Curve::CATMULL;
+	indexPointCurb = 0;
 }
 
 void ofApp::cameraStartListener() {

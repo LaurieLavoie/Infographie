@@ -91,8 +91,12 @@ class ofApp : public ofBaseApp{
 		ofxPanel curbGui;
 		ofxButton hermiteButton;
 		ofxButton bezierButton;
+		ofxButton splineButton;
+		ofxButton catmullButton;
 		void hermiteListener();
 		void bezierListener();
+		void splineListener();
+		void catmullListener();
 		int indexPointCurb;
 
 		~ofApp();
