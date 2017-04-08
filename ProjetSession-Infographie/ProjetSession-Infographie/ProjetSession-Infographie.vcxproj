@@ -245,6 +245,7 @@ C:\of_v0.9.8_vs_release\addons\ofxGui\src</AdditionalIncludeDirectories>
     <ClCompile Include="src\ofApp.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
     <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\VoronoiDiagramGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\of_v0.9.8_vs_release\addons\ofxAssimpModelLoader\libs\assimp\include\assimp\ai_assert.h" />
@@ -300,8 +301,10 @@ C:\of_v0.9.8_vs_release\addons\ofxGui\src</AdditionalIncludeDirectories>
     <ClInclude Include="src\Camera.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\ofApp.h" />
+    <ClInclude Include="src\ofxVoronoi2D.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\VoronoiDiagramGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">

@@ -7,6 +7,7 @@
 #include <math.h>   
 #include "ofMain.h"
 #include "ofxAssimpModelLoader.h"
+#include "ofxVoronoi2D.h"
 
 enum class VectorPrimitive { NONE, PIXEL, POINT, LINE, RECTANGLE, ELLIPSE, PARTICLE };
 
@@ -183,5 +184,9 @@ public:
 	int framebufferWidth;
 	int framebufferHeight;
 	int indexCurb;
+
+	void drawVoronoi();
+	bool isVoronoi;
+
 	~Renderer();
 };

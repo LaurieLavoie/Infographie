@@ -12,6 +12,7 @@ Renderer::Renderer()
 
 void Renderer::setup()
 {
+	isVoronoi = false;
 	ofSetFrameRate(60);
 	image.load("image.jpg");
 	ofSetWindowShape(image.getWidth(), image.getHeight());
@@ -280,6 +281,11 @@ void Renderer::draw()
 			// affecter la position du point sur la courbe
 			lineRenderer[index] = position;
 		}
+	}
+
+	if (isVoronoi)
+	{
+		drawVoronoi();
 	}
 }
 
@@ -647,6 +653,32 @@ bool Renderer::isOnRectangle(int index, int x, int y)
 
 		return x >  xmin && x < xmax && y > ymin  && y < ymax;
 	}
+}
+
+void Renderer::drawVoronoi()
+{
+	ofxVoronoi2D voronoi;
+	vector<ofVec2f> pts;
+	pts.push_back(ofVec2f(float(15), float(155)));
+	pts.push_back(ofVec2f(float(78), float(261)));
+	pts.push_back(ofVec2f(float(456), float(82)));
+	pts.push_back(ofVec2f(float(756), float(432)));
+	pts.push_back(ofVec2f(float(715), float(264)));
+
+	voronoi.compute(pts, ofRectangle(0, 0, ofGetWidth(), ofGetHeight()));
+
+	for (ofxSegmentIterator it = voronoi.edges(); it; ++it) {
+		ofxSegment s = *it;
+		ofLine(s.p1, s.p2);
+	}
+
+	ofMesh mesh;
+	voronoi.buildMesh(mesh);
+	mesh.setColorForIndices(0, mesh.getNumIndices(), ofFloatColor(1.0f, 1.0f, 1.0f));
+	for (unsigned int i = 0; i < mesh.getNumIndices(); i += 3) {
+		mesh.setColor(mesh.getIndex(i), ofFloatColor(0.0f, 0.0f, 1.0f)); // cell centers
+	}
+	mesh.draw();
 }
 
 

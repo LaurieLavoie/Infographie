@@ -92,10 +92,13 @@ class ofApp : public ofBaseApp{
 		ofxButton hermiteButton;
 		ofxButton bezierButton;
 		ofxButton splineButton;
+		ofxButton voronoiButton;
 		void hermiteListener();
 		void bezierListener();
 		void splineListener();
+		void voronoiListener();
 		int indexPointCurb;
+
 
 		~ofApp();
 
