@@ -49,7 +49,8 @@ class ofApp : public ofBaseApp{
 		ofxButton translationButton;
 		ofxButton rotationButton;
 		ofxButton proportionButton;
-
+		ofxButton shaderColorButton;
+		ofxButton shaderGeoButton;
 
 		ofxButton importButton;
 		ofxButton exportButton;
@@ -65,7 +66,8 @@ class ofApp : public ofBaseApp{
 		void translationListener();
 		void rotationListener();
 		void proportionListener();
-
+		void shaderColorListener();
+		void shaderGeoListener();
 
 		int lastMouseReleasedX;
 		int lastMouseReleasedY;
@@ -87,5 +89,6 @@ class ofApp : public ofBaseApp{
 
 	private:
 		std::unique_ptr<Scene> scene;
-		
+		ofShader shader;
+		ofShader shaderGeo;
 };
