@@ -196,6 +196,7 @@ void Renderer::draw()
 
 	if (curveID != Curve::NONE)
 	{
+
 		ofSetColor(63, 63, 63);
 
 		// dessiner la ligne contour
@@ -205,7 +206,16 @@ void Renderer::draw()
 		ofDrawLine(ctrlPoint1.x, ctrlPoint1.y, ctrlPoint2.x, ctrlPoint2.y);
 		ofDrawLine(ctrlPoint3.x, ctrlPoint3.y, ctrlPoint4.x, ctrlPoint4.y);
 			ofDrawLine(ctrlPoint2.x, ctrlPoint2.y, ctrlPoint3.x, ctrlPoint3.y);
-			ofDrawLine(ctrlPoint4.x, ctrlPoint4.y, ctrlPoint1.x, ctrlPoint1.y);
+			
+			if (curveID == Curve::SPLINE)
+			{
+				ofDrawLine(ctrlPoint4.x, ctrlPoint4.y, ctrlPoint5.x, ctrlPoint5.y);
+				ofDrawLine(ctrlPoint5.x, ctrlPoint5.y, ctrlPoint1.x, ctrlPoint1.y);
+			}
+			else
+			{
+				ofDrawLine(ctrlPoint4.x, ctrlPoint4.y, ctrlPoint1.x, ctrlPoint1.y);
+			}
 
 
 		// dessiner la courbe
@@ -221,6 +231,10 @@ void Renderer::draw()
 		ofDrawEllipse(ctrlPoint2.x, ctrlPoint2.y, radius, radius);
 		ofDrawEllipse(ctrlPoint3.x, ctrlPoint3.y, radius, radius);
 		ofDrawEllipse(ctrlPoint4.x, ctrlPoint4.y, radius, radius);
+		if (curveID == Curve::SPLINE)
+		{
+			ofDrawEllipse(ctrlPoint5.x, ctrlPoint5.y, radius, radius);
+		}
 
 		ofVec3f tangent1 = ctrlPoint2 - ctrlPoint1;
 		ofVec3f tangent2 = ctrlPoint3 - ctrlPoint4;
@@ -250,7 +264,16 @@ void Renderer::draw()
 					ctrlPoint4.x, ctrlPoint4.y, ctrlPoint4.z,
 					position.x, position.y, position.z);
 				break;
-
+			case Curve::SPLINE:
+				spline(
+					index / (float)lineResolution,
+					ctrlPoint1.x, ctrlPoint1.y, ctrlPoint1.z,
+					ctrlPoint2.x, ctrlPoint2.y, ctrlPoint2.z,
+					ctrlPoint3.x, ctrlPoint3.y, ctrlPoint3.z,
+					ctrlPoint4.x, ctrlPoint4.y, ctrlPoint4.z,
+					ctrlPoint5.x, ctrlPoint5.y, ctrlPoint5.z,
+					position.x, position.y, position.z);
+				break;
 			default:
 				break;
 			}

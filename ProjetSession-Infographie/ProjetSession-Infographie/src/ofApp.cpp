@@ -73,8 +73,6 @@ void ofApp::setup()
 	bezierButton.addListener(this, &ofApp::bezierListener);
 	curbGui.add(splineButton.setup("Spline bezier"));
 	splineButton.addListener(this, &ofApp::splineListener);
-	curbGui.add(catmullButton.setup("Catmull-Rom"));
-	catmullButton.addListener(this, &ofApp::catmullListener);
 
 	renderer = new Renderer();
 	renderer->setup();
@@ -122,11 +120,6 @@ void ofApp::bezierListener() {
 
 void ofApp::splineListener() {
 	renderer->curveID = Curve::SPLINE;
-	indexPointCurb = 0;
-}
-
-void ofApp::catmullListener() {
-	renderer->curveID = Curve::CATMULL;
 	indexPointCurb = 0;
 }
 
@@ -411,6 +404,19 @@ void ofApp::mouseReleased(int x, int y, int button)
 		{
 			renderer->selectedCtrlPoint = &renderer->ctrlPoint4;
 			renderer->ctrlPoint4 = { (float)x, (float)y, 0 };
+			if (renderer->curveID == Curve::SPLINE)
+			{
+				indexPointCurb = 4;
+			}
+			else
+			{
+				indexPointCurb = 0;
+			}
+		}
+		else if (indexPointCurb == 4)
+		{
+			renderer->selectedCtrlPoint = &renderer->ctrlPoint5;
+			renderer->ctrlPoint5 = { (float)x, (float)y, 0 };
 			indexPointCurb = 0;
 		}
 	}
