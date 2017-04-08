@@ -28,6 +28,71 @@ typedef struct
 	GLubyte color[4]; // 4 * 1 = 4  octets
 } VertexStruct; // = 36 octets
 
+				// fonction d'évaluation d'une courbe de Bézier cubique (4 points de contrôle)
+inline void bezierCubic(
+	float t,
+	float p1x, float p1y, float p1z,
+	float p2x, float p2y, float p2z,
+	float p3x, float p3y, float p3z,
+	float p4x, float p4y, float p4z,
+	float&  x, float& y, float&  z)
+{
+	float u = 1 - t;
+	float uu = u * u;
+	float uuu = uu * u;
+	float tt = t * t;
+	float ttt = tt * t;
+
+	x = uuu * p1x + 3 * uu * t * p2x + 3 * u * tt * p3x + ttt * p4x;
+	y = uuu * p1y + 3 * uu * t * p2y + 3 * u * tt * p3y + ttt * p4y;
+	z = uuu * p1z + 3 * uu * t * p2z + 3 * u * tt * p3z + ttt * p4z;
+}
+
+enum class Curve { BEZIER_CUBIC, HERMITE, SPLINE, NONE };
+
+// fonction d'évaluation d'une courbe de hermite (4 points de contrôle)
+inline void hermite(
+	float t,
+	float p1x, float p1y, float p1z,
+	float p2x, float p2y, float p2z,
+	float p3x, float p3y, float p3z,
+	float p4x, float p4y, float p4z,
+	float&  x, float& y, float&  z)
+{
+	float u = 1 - t;
+	float uu = u * u;
+	float uuu = uu * u;
+	float tt = t * t;
+	float ttt = tt * t;
+
+	x = (2 * ttt - 3 * tt + 1) * p1x + (ttt - 2 * tt + t) * p2x + (ttt - tt) * p3x + (-2 * ttt + 3 * tt) * p4x;
+	y = (2 * ttt - 3 * tt + 1) * p1y + (ttt - 2 * tt + t) * p2y + (ttt - tt) * p3y + (-2 * ttt + 3 * tt) * p4y;
+	z = (2 * ttt - 3 * tt + 1) * p1z + (ttt - 2 * tt + t) * p2z + (ttt - tt) * p3z + (-2 * ttt + 3 * tt) * p4z;
+}
+
+inline void spline(
+	float t,
+	float p1x, float p1y, float p1z,
+	float p2x, float p2y, float p2z,
+	float p3x, float p3y, float p3z,
+	float p4x, float p4y, float p4z,
+	float p5x, float p5y, float p5z,
+	float&  x, float& y, float&  z)
+{
+	float u = 1 - t;
+	float uu = u * u;
+	float uuu = uu * u;
+	float uuuu = uuu * u;
+	float tt = t * t;
+	float ttt = tt * t;
+	float tttt = ttt * t;
+
+	x = uuuu * p1x + 4 * uuu * t * p2x + 4 * uu * tt * p3x + 4 * u * ttt * p4x + tttt * p5x;
+	y = uuuu * p1y + 4 * uuu * t * p2y + 4 * uu * tt * p3y + 4 * u * ttt * p4y + tttt * p5y;
+	z = uuuu * p1z + 4 * uuu * t * p2z + 4 * uu * tt * p3z + 4 * u * ttt * p4z + tttt * p5z;
+}
+
+
 class Renderer
 {
 public:
@@ -97,7 +162,28 @@ public:
 	ofMesh meshParticles;
 	ofMesh meshProceduralGeometry;
 	ofImage textureParticles;
-	ofShader shaderGeo;
-	ofShader shaderColor;
+
+	Curve curveID;
+	ofPolyline lineRenderer;
+	ofVec3f * selectedCtrlPoint;
+	ofVec3f ctrlPoint1;
+	ofVec3f ctrlPoint2;
+	ofVec3f ctrlPoint3;
+	ofVec3f ctrlPoint4;
+	ofVec3f ctrlPoint5;
+	ofVec3f position;
+	int lineResolution;
+	float radius;
+	float scale;
+	float smooth;
+	float offset;
+	float lineWidthOutline;
+	float lineWidthCurve;
+	float xDelta;
+	float yDelta;
+	float motionSpeed;
+	int framebufferWidth;
+	int framebufferHeight;
+	int indexCurb;
 	~Renderer();
 };
