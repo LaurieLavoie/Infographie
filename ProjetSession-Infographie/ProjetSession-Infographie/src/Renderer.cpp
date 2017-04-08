@@ -5,9 +5,10 @@
 #include "renderer.h"
 
 
-Renderer::Renderer()
+Renderer::Renderer(ofShader sshaderColor, ofShader sshaderGeo)
 {
-
+	shaderGeo = sshaderGeo;
+	shaderColor = sshaderColor;
 }
 
 void Renderer::setup()
@@ -53,7 +54,7 @@ void Renderer::setupParticles() {
 	for (int i = 0; i < nbrParticles; i++) {
 		ofVec2f p = ofVec2f(ofRandom(0, ofGetWidth()), ofRandom(0, ofGetHeight()));
 		meshParticles.addVertex(p);
-		meshParticles.addColor(ofColor(255,255,255));
+		meshParticles.addColor(ofColor(255, 255, 255));
 	}
 	ofDisableArbTex();
 	textureParticles.loadImage("fire.jpg");
@@ -68,11 +69,11 @@ void Renderer::setupProceduralGeometry() {
 	meshProceduralGeometry.setMode(OF_PRIMITIVE_POINTS);
 	isProceduralGeometryON = !isProceduralGeometryON;
 	if (isProceduralGeometryON) {
-			
+
 		int w = image.getWidth();
 		int h = image.getHeight();
-		for (int x = 0; x<w; ++x) {
-			for (int y = 0; y<h; ++y) {
+		for (int x = 0; x < w; ++x) {
+			for (int y = 0; y < h; ++y) {
 				ofColor c = image.getColor(x, y);
 				float intensity = c.getLightness();
 				ofVec3f pos(x, y, intensity * 10);
@@ -131,16 +132,39 @@ void Renderer::draw()
 
 		case VectorPrimitive::LINE:
 
-			ofNoFill();
-			ofSetLineWidth(shape[index].strokeWidth);
-			c.setHsb(shape[index].fillColor[0], shape[index].fillColor[1], shape[index].fillColor[2]);
-			ofSetColor(c);
 
-			drawLine(
-				shape[index].position1[0],
-				shape[index].position1[1],
-				shape[index].position2[0] ,
-				shape[index].position2[1]);
+			ofPushMatrix();
+
+			if (shaderModeGeo)
+			{
+				shaderGeo.begin();
+
+				// set thickness of ribbons
+				shaderGeo.setUniform1f("thickness", 20);
+
+				// make light direction slowly rotate
+				shaderGeo.setUniform3f("lightDir", sin(ofGetElapsedTimef() / 10), cos(ofGetElapsedTimef() / 10), 0);
+			}
+				
+			
+
+				ofNoFill();
+				ofSetLineWidth(shape[index].strokeWidth);
+				c.setHsb(shape[index].fillColor[0], shape[index].fillColor[1], shape[index].fillColor[2]);
+				ofSetColor(c);
+
+				drawLine(
+					shape[index].position1[0],
+					shape[index].position1[1],
+					shape[index].position2[0],
+					shape[index].position2[1]);
+
+				if (shaderModeGeo) {
+					shaderGeo.end();
+				}
+		
+
+			ofPopMatrix();
 
 			break;
 
@@ -151,6 +175,16 @@ void Renderer::draw()
 			c.setHsb(shape[index].fillColor[0], shape[index].fillColor[1], shape[index].fillColor[2]);
 			ofSetColor(c);
 			ofPushMatrix();
+
+			if (shaderMode)
+			{
+				shaderColor.begin();
+
+			
+			}
+
+
+
 			ofSetRectMode(OF_RECTMODE_CORNER);
 			ofTranslate(shape[index].position1[0], 0, 0);
 			ofTranslate(0, shape[index].position1[1], 0);
@@ -161,6 +195,13 @@ void Renderer::draw()
 				0,
 				shape[index].position2[0] - shape[index].position1[0],
 				shape[index].position2[1] - shape[index].position1[1]);
+
+			if (shaderMode)
+			{
+				shaderColor.end();
+
+
+			}
 
 			ofPopMatrix();
 
@@ -189,7 +230,7 @@ void Renderer::draw()
 			ofPopMatrix();
 			break;
 
-	
+
 		default:
 			break;
 		}
@@ -497,14 +538,14 @@ void Renderer::translateShape(float xPressed, float yPressed, float xReleased, f
 		}
 		else if (shape[index].type == VectorPrimitive::ELLIPSE)
 		{
-			float radius1 = (shape[index].position2[0] - shape[index].position1[0])/2;
-			float radius2 = (shape[index].position2[1] - shape[index].position1[1])/2;
-			float test1 = yPressed - shape[index].position1[1]-radius2;
-			float test2 = xPressed - shape[index].position1[0]-radius1;
+			float radius1 = (shape[index].position2[0] - shape[index].position1[0]) / 2;
+			float radius2 = (shape[index].position2[1] - shape[index].position1[1]) / 2;
+			float test1 = yPressed - shape[index].position1[1] - radius2;
+			float test2 = xPressed - shape[index].position1[0] - radius1;
 			float firstFormula = ((test1 * test1) / (radius2 * radius2));
 			float secondFormula = ((test2*test2) / (radius1 * radius1));
 			float result = firstFormula + secondFormula;
-			
+
 			if (result < 1)
 			{
 				ofLog() << "Ellipse here";
@@ -559,7 +600,7 @@ void Renderer::rotateShape(float xPressed, float yPressed, float xReleased, floa
 	{
 		if (shape[index].type == VectorPrimitive::LINE)
 		{
-			if(isOnLine(index, xPressed, yPressed))
+			if (isOnLine(index, xPressed, yPressed))
 			{
 				ofLog() << "Line here";
 
@@ -572,7 +613,7 @@ void Renderer::rotateShape(float xPressed, float yPressed, float xReleased, floa
 				shape[index].position2[0] = rotatedX + shape[index].position1[0];
 				shape[index].position2[1] = rotatedY + shape[index].position1[1];
 
-			
+
 
 			}
 		}
@@ -585,7 +626,7 @@ void Renderer::rotateShape(float xPressed, float yPressed, float xReleased, floa
 				if (anglesShapes[index] == 360) {
 					anglesShapes[index] = 0;
 				}
-					anglesShapes[index] += 45;
+				anglesShapes[index] += 45;
 			}
 		}
 		else if (shape[index].type == VectorPrimitive::ELLIPSE)
@@ -609,7 +650,7 @@ bool Renderer::isOnLine(int index, int x, int y)
 {
 	int tolerance = 3;
 	return 	std::abs((x - shape[index].position2[0]) / (shape[index].position2[0] - shape[index].position1[0]) - (y - shape[index].position1[1]) / (shape[index].position2[1] - shape[index].position1[1])) < tolerance;
-	
+
 }
 
 bool Renderer::isOnEllipse(int index, int x, int y)
@@ -626,15 +667,15 @@ bool Renderer::isOnEllipse(int index, int x, int y)
 
 		return result < 1;
 	}
-	else{
+	else {
 
-	int xmin = (shape[index].position1[0] - (shape[index].position2[0] - shape[index].position1[0]));
-	int xmax = (shape[index].position2[0] + (shape[index].position2[0] - shape[index].position1[0]));
-	int ymin = (shape[index].position1[1] - (shape[index].position2[1] - shape[index].position1[1]));
-	int ymax = (shape[index].position2[1] + (shape[index].position2[1] - shape[index].position1[1]));
+		int xmin = (shape[index].position1[0] - (shape[index].position2[0] - shape[index].position1[0]));
+		int xmax = (shape[index].position2[0] + (shape[index].position2[0] - shape[index].position1[0]));
+		int ymin = (shape[index].position1[1] - (shape[index].position2[1] - shape[index].position1[1]));
+		int ymax = (shape[index].position2[1] + (shape[index].position2[1] - shape[index].position1[1]));
 
-	return x >  xmin && x < xmax && y > ymin  && y < ymax;
-}
+		return x > xmin && x < xmax && y > ymin  && y < ymax;
+	}
 
 }
 
@@ -648,10 +689,10 @@ bool Renderer::isOnRectangle(int index, int x, int y)
 		int xmax = (shape[index].position2[0] + (shape[index].position2[0] - shape[index].position1[0]));
 		int ymin = (shape[index].position1[1] - (shape[index].position2[1] - shape[index].position1[1]));
 		int ymax = (shape[index].position2[1] + (shape[index].position2[1] - shape[index].position1[1]));
-	
 
 
-		return x >  xmin && x < xmax && y > ymin  && y < ymax;
+
+		return x > xmin && x < xmax && y > ymin  && y < ymax;
 	}
 }
 

@@ -98,14 +98,15 @@ class Renderer
 {
 public:
 
-	Renderer();
 	ofImage image;
 	void imageExport(const string name, const string extension) const;
 	void imageImport(string path);
 	void objImport(string path);
+	Renderer(ofShader sshaderColor, ofShader sshaderGeo);
 	void setup();
 	void draw();
-
+	ofShader shaderColor;
+	ofShader shaderGeo;
 	void drawZone(float x1, float y1, float x2, float y2) const;
 	void drawCursor(float x, float y) const;
 
@@ -132,6 +133,8 @@ public:
 	unsigned char fillColorH;
 	unsigned char fillColorS;
 	unsigned char fillColorB;
+	bool shaderMode = false;
+	bool shaderModeGeo = false;
 
 	void addVectorShape(VectorPrimitive type);
 	void drawLine(float x1, float y1, float x2, float y2) const;

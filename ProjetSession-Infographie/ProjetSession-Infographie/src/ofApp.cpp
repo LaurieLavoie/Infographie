@@ -14,6 +14,28 @@ void ofApp::setup()
 */
 	indexPointCurb = 0;
 
+#ifdef TARGET_OPENGLES
+	shader.load("shadersES2/shader");
+#else
+	if (ofIsGLProgrammableRenderer()) {
+		shader.load("shadersGL3/shader");
+	}
+	else {
+		ofSetLogLevel(OF_LOG_VERBOSE);
+		ofBackground(50, 50, 50);
+		ofSetVerticalSync(false);
+		ofEnableAlphaBlending();
+		shader.load("shadersGL2/shader");
+		shaderGeo.setGeometryInputType(GL_LINE);
+		shaderGeo.setGeometryOutputType(GL_TRIANGLE_STRIP);
+		shaderGeo.setGeometryOutputCount(4);
+		shaderGeo.load("shadersGL3/vert.glsl", "shadersGL3/frag.glsl", "shadersGL3/geom.glsl");
+	
+		ofEnableDepthTest();
+	}
+#endif
+
+
 	ofSetWindowTitle("Projet session");
 
 	isLine = false;
@@ -40,6 +62,10 @@ void ofApp::setup()
 	rotationButton.addListener(this, &ofApp::rotationListener);
 	gui.add(proportionButton.setup("proportion"));
 	proportionButton.addListener(this, &ofApp::proportionListener);
+	gui.add(shaderColorButton.setup("shader de couleur"));
+	shaderColorButton.addListener(this, &ofApp::shaderColorListener);
+	gui.add(shaderGeoButton.setup("shader de geometrie"));
+	shaderGeoButton.addListener(this, &ofApp::shaderGeoListener);
 
 	cameraGui.setup();
 	cameraGui.setPosition(210, 10);
@@ -76,7 +102,7 @@ void ofApp::setup()
 	curbGui.add(voronoiButton.setup("Voronoi diagram"));
 	voronoiButton.addListener(this, &ofApp::voronoiListener);
 
-	renderer = new Renderer();
+	renderer = new Renderer(shader, shaderGeo);
 	renderer->setup();
 
 	scene = std::make_unique<Scene>();
@@ -160,7 +186,7 @@ void ofApp::cameraFarClipListener(float& v)
 void ofApp::cameraVFovListener(float& v)
 {
 	scene->mainCamera.setVerticalFov(v);
-	
+
 	// Update HFov slider
 	cameraHFovSlider.removeListener(this, &ofApp::cameraHFovListener);
 	cameraHFovSlider = RAD_TO_DEG(Camera::VFovToHFov(DEG_TO_RAD(v), scene->mainCamera.getAspectRatio()));
@@ -208,6 +234,27 @@ void ofApp::proportionListener()
 	renderer->drawCursor(renderer->xMouseCurrent, renderer->yMouseCurrent);
 }
 
+void ofApp::shaderColorListener()
+{
+	if (renderer->shaderMode) {
+		renderer->shaderMode = false;
+	}
+	else {
+		renderer->shaderMode = true;
+	}
+}
+
+void ofApp::shaderGeoListener()
+{
+	if (renderer->shaderModeGeo) {
+		renderer->shaderModeGeo = false;
+	}
+	else {
+		renderer->shaderModeGeo = true;
+	}
+
+}
+
 void ofApp::exportListener() {
 	renderer->imageExport("test", "jpg");
 }
@@ -238,7 +285,7 @@ void ofApp::modelShowPrimitivesListener() {
 
 void ofApp::modelParticleListener() {
 	renderer->setupParticles();
-	
+
 }
 
 
@@ -272,8 +319,11 @@ void ofApp::draw()
 
 	ofClear(50.0f, 50.0f, 250.0f);
 
-	renderer->draw();
 
+
+
+
+	renderer->draw();
 
 	if (scene != nullptr)
 	{
@@ -310,7 +360,6 @@ void ofApp::draw()
 	gui.draw();
 	cameraGui.draw();
 	modelGui.draw();
-	curbGui.draw();
 }
 
 void ofApp::mouseMoved(int x, int y)
@@ -338,7 +387,7 @@ void ofApp::mouseDragged(int x, int y, int button)
 			scene->mainCamera.setLongitude(longitude);
 			scene->mainCamera.setLatitude(latitude);
 		}
-		else if(button == OF_MOUSE_BUTTON_RIGHT)
+		else if (button == OF_MOUSE_BUTTON_RIGHT)
 		{
 			auto oldRadius = scene->mainCamera.getOrbitRadius();
 			auto radius = oldRadius + (delta_y * log(oldRadius) * 0.75f);
@@ -378,7 +427,7 @@ void ofApp::mouseReleased(int x, int y, int button)
 	lastMouseReleasedY = y;
 
 	renderer->addVectorShape(renderer->drawMode);
-	renderer->drawCursor(0,0);
+	renderer->drawCursor(0, 0);
 
 	if (renderer->modeCursor == 2)
 	{
@@ -391,47 +440,6 @@ void ofApp::mouseReleased(int x, int y, int button)
 	else if (renderer->modeCursor == 4)
 	{
 		renderer->proportionShape(renderer->xMousePress, renderer->yMousePress, x, y);
-	}
-
-	if (renderer->curveID != Curve::NONE)
-	{
-		if (indexPointCurb == 0)
-		{
-			renderer->selectedCtrlPoint = &renderer->ctrlPoint1;
-			renderer->ctrlPoint1 = { (float)x, (float)y, 0 };
-			indexPointCurb = indexPointCurb + 1;
-		}
-		else if (indexPointCurb == 1)
-		{
-			renderer->selectedCtrlPoint = &renderer->ctrlPoint2;
-			renderer->ctrlPoint2 = { (float)x, (float)y, 0 };
-			indexPointCurb = indexPointCurb + 1;
-		}
-		else if (indexPointCurb == 2)
-		{
-			renderer->selectedCtrlPoint = &renderer->ctrlPoint3;
-			renderer->ctrlPoint3 = { (float)x, (float)y, 0 };
-			indexPointCurb = indexPointCurb + 1;
-		}
-		else if (indexPointCurb == 3)
-		{
-			renderer->selectedCtrlPoint = &renderer->ctrlPoint4;
-			renderer->ctrlPoint4 = { (float)x, (float)y, 0 };
-			if (renderer->curveID == Curve::SPLINE)
-			{
-				indexPointCurb = 4;
-			}
-			else
-			{
-				indexPointCurb = 0;
-			}
-		}
-		else if (indexPointCurb == 4)
-		{
-			renderer->selectedCtrlPoint = &renderer->ctrlPoint5;
-			renderer->ctrlPoint5 = { (float)x, (float)y, 0 };
-			indexPointCurb = 0;
-		}
 	}
 	
 	ofLog() << "<app::mouse released at: (" << x << ", " << y << ")>";
