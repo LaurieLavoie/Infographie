@@ -99,6 +99,8 @@ void ofApp::setup()
 	bezierButton.addListener(this, &ofApp::bezierListener);
 	curbGui.add(splineButton.setup("Spline bezier"));
 	splineButton.addListener(this, &ofApp::splineListener);
+	curbGui.add(voronoiButton.setup("Voronoi diagram"));
+	voronoiButton.addListener(this, &ofApp::voronoiListener);
 
 	renderer = new Renderer(shader, shaderGeo);
 	renderer->setup();
@@ -147,6 +149,17 @@ void ofApp::bezierListener() {
 void ofApp::splineListener() {
 	renderer->curveID = Curve::SPLINE;
 	indexPointCurb = 0;
+}
+
+void ofApp::voronoiListener() {
+	if (renderer->isVoronoi)
+	{
+		renderer->isVoronoi = false;
+	}
+	else
+	{
+		renderer->isVoronoi = true;
+	}
 }
 
 void ofApp::cameraStartListener() {
