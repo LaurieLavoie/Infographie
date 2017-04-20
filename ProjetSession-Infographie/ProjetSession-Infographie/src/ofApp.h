@@ -101,6 +101,11 @@ class ofApp : public ofBaseApp{
 		void voronoiListener();
 		int indexPointCurb;
 
+		ofMaterial material;
+		ofLight ambient;
+		ofLight point;
+		ofLight spot;
+		ofLight directional;
 
 		~ofApp();
 

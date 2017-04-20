@@ -73,9 +73,9 @@ void ofApp::setup()
 	cameraStartButton.addListener(this, &ofApp::cameraStartListener);
 	cameraGui.add(cameraProjectionButton.setup("Projecion"));
 	cameraProjectionButton.addListener(this, &ofApp::cameraProjectionListener);
-	cameraGui.add(cameraNearClipSlider.setup("Near clipping plane", 0.1f, 0.1f, 1000.0f));
+	cameraGui.add(cameraNearClipSlider.setup("Near clipping plane", 0.1f, 0.1f, 5000.0f));
 	cameraNearClipSlider.addListener(this, &ofApp::cameraNearClipListener);
-	cameraGui.add(cameraFarClipSlider.setup("Far clipping plane", 250.0f, 0.1f, 1000.0f));
+	cameraGui.add(cameraFarClipSlider.setup("Far clipping plane", 250.0f, 0.1f, 5000.0f));
 	cameraFarClipSlider.addListener(this, &ofApp::cameraFarClipListener);
 	cameraGui.add(cameraVFovSlider.setup("Vertical fov", 60.0f, 10.0f, 179.0f));
 	cameraVFovSlider.addListener(this, &ofApp::cameraVFovListener);
@@ -112,22 +112,48 @@ void ofApp::setup()
 	// Add dummy mesh for tests
 	objModel = nullptr;
 
-	// Add dummy light
-	auto raw_light = new ofLight();
-	raw_light->enable();
-	raw_light->setAmbientColor(ofColor(250.0f, 240.0f, 220.0f) * 0.1f);
-	raw_light->setPointLight();
-	raw_light->boom(50.0f);
-	raw_light->setDiffuseColor(ofColor(250.0f, 240.0f, 220.0f));
-	raw_light->setSpecularColor(ofColor(250.0f, 240.0f, 220.0f));
-	std::shared_ptr<Entity> light(new Entity(raw_light));
-	scene->mainCamera.addChild(light);
+	
+	ambient.enable();
+	ambient.setAmbientColor({ 255.0f, 255.0f, 255.0f });
+
+	point.enable();
+	point.setPointLight();
+	point.setDiffuseColor({ 255.0f, 0.0f, 0.0f });
+	point.setSpecularColor({ 255.0f, 0.0f, 0.0f });
+	point.setAmbientColor({ 255.0f, 255.0f, 255.0f });
+
+	spot.enable();
+	spot.setSpotlight();
+	spot.setDiffuseColor({ 0.0f, 255.0f, 0.0f });
+	spot.setSpecularColor({ 0.0f, 255.0f, 0.0f });
+	spot.setAmbientColor({ 255.0f, 255.0f, 255.0f });
+
+	directional.enable();
+	directional.setDirectional();
+	directional.setDiffuseColor({ 0.0f, 0.0f, 255.0f });
+	directional.setSpecularColor({ 0.0f, 0.0f, 255.0f });
+	directional.setAmbientColor({ 255.0f, 255.0f, 255.0f });
+	directional.setOrientation(ofVec3f{ 0.0f, -1.0f, 1.0f }.normalized());
+
+	std::shared_ptr<Entity> ambient_light(new Entity(&ambient));
+	std::shared_ptr<Entity> point_light(new Entity(&point));
+	std::shared_ptr<Entity> spot_light(new Entity(&spot));
+	std::shared_ptr<Entity> directional_light(new Entity(&directional));
+
+	scene->getRoot().addChild(ambient_light);
+	scene->getRoot().addChild(point_light);
+	scene->getRoot().addChild(spot_light);
+	scene->getRoot().addChild(directional_light);
+
 	scene->mainCamera.dolly(250.0f);
 	scene->mainCamera.boom(50.0f);
 
-	scene->mainCamera.setOrbitRadius(300.0f);
-
-
+	scene->mainCamera.setOrbitRadius(700.0f);
+	
+	material.setAmbientColor({ 255.0f, 255.0f, 255.0f });
+	material.setDiffuseColor({ 255.0f, 255.0f, 255.0f });
+	material.setSpecularColor({ 255.0f, 255.0f, 255.0f });
+	material.setShininess(120);
 }
 
 void ofApp::update()
@@ -331,14 +357,18 @@ void ofApp::draw()
 
 		ofEnableLighting();
 		ofEnableDepthTest();
+		ofEnableAlphaBlending();
+		ofEnablePointSprites();
 
 		scene->mainCamera.getOfCamera().begin();
 		renderer->image.getTexture().bind();
 		scene->mainCamera.draw();
+		material.begin();
 		scene->getRoot().draw();
 		if (objModel != nullptr) {
 			objModel->draw(OF_MESH_FILL);
 		}
+		material.end();
 		ofDisableLighting();
 		renderer->image.getTexture().unbind();
 		ofDisableDepthTest();
@@ -346,14 +376,11 @@ void ofApp::draw()
 			renderer->meshProceduralGeometry.draw();
 		}
 		if (renderer->isParticlesON) {
-			ofEnableAlphaBlending();
-			ofEnablePointSprites();
 			renderer->textureParticles.getTextureReference().bind();
 			renderer->meshParticles.drawFaces();
 			renderer->textureParticles.getTextureReference().unbind();
 		}
 		scene->mainCamera.getOfCamera().end();
-
 	}
 
 
