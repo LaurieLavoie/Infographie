@@ -383,10 +383,10 @@ void ofApp::draw()
 		scene->mainCamera.getOfCamera().end();
 	}
 
-
 	gui.draw();
 	cameraGui.draw();
 	modelGui.draw();
+	curbGui.draw();
 }
 
 void ofApp::mouseMoved(int x, int y)
