@@ -318,6 +318,28 @@ C:\of_v0.9.8_vs_release\addons\ofxGui\src</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories>$(OF_ROOT)\libs\openFrameworksCompiled\project\vs</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\shadersES2\shader.frag" />
+    <None Include="bin\data\shadersES2\shader.vert" />
+    <None Include="bin\data\shadersES2\shaderGeo.frag" />
+    <None Include="bin\data\shadersES2\shaderGeo.vert" />
+    <None Include="bin\data\shadersGL2\shader.frag" />
+    <None Include="bin\data\shadersGL2\shader.vert" />
+    <None Include="bin\data\shadersGL2\shaderGeo.frag" />
+    <None Include="bin\data\shadersGL2\shaderGeo.vert" />
+    <None Include="bin\data\shadersGL3\asd.frag" />
+    <None Include="bin\data\shadersGL3\asd.vert" />
+    <None Include="bin\data\shadersGL3\frag.glsl" />
+    <None Include="bin\data\shadersGL3\geom.glsl" />
+    <None Include="bin\data\shadersGL3\shader.frag" />
+    <None Include="bin\data\shadersGL3\shader.vert" />
+    <None Include="bin\data\shadersGL3\shaderGeo.frag" />
+    <None Include="bin\data\shadersGL3\shaderGeo.vert" />
+    <None Include="bin\data\shadersGL3\vert.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="bin\data\shadersGL3\shaderGeo.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ProjectExtensions>
     <VisualStudio>

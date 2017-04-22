@@ -115,4 +115,26 @@
       <UniqueIdentifier>{f88fbf00-0765-4346-9cd1-4dce1b677846}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\data\shadersGL2\shader.frag" />
+    <None Include="bin\data\shadersGL2\shader.vert" />
+    <None Include="bin\data\shadersGL3\asd.frag" />
+    <None Include="bin\data\shadersGL3\frag.glsl" />
+    <None Include="bin\data\shadersGL3\asd.vert" />
+    <None Include="bin\data\shadersGL3\geom.glsl" />
+    <None Include="bin\data\shadersGL3\shader.frag" />
+    <None Include="bin\data\shadersGL3\shader.vert" />
+    <None Include="bin\data\shadersGL3\shaderGeo.frag" />
+    <None Include="bin\data\shadersGL3\shaderGeo.vert" />
+    <None Include="bin\data\shadersGL3\vert.glsl" />
+    <None Include="bin\data\shadersGL2\shaderGeo.frag" />
+    <None Include="bin\data\shadersGL2\shaderGeo.vert" />
+    <None Include="bin\data\shadersES2\shader.frag" />
+    <None Include="bin\data\shadersES2\shader.vert" />
+    <None Include="bin\data\shadersES2\shaderGeo.frag" />
+    <None Include="bin\data\shadersES2\shaderGeo.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="bin\data\shadersGL3\shaderGeo.txt" />
+  </ItemGroup>
 </Project>
