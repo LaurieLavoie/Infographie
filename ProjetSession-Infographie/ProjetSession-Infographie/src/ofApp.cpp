@@ -26,9 +26,9 @@ void ofApp::setup()
 		ofSetVerticalSync(false);
 		ofEnableAlphaBlending();
 		shader.load("shadersGL2/shader");
-		shaderGeo.setGeometryInputType(GL_LINE);
-		shaderGeo.setGeometryOutputType(GL_TRIANGLE_STRIP);
-		shaderGeo.setGeometryOutputCount(4);
+		//shaderGeo.setGeometryInputType(GL_LINE);
+		//shaderGeo.setGeometryOutputType(GL_TRIANGLE_STRIP);
+		//shaderGeo.setGeometryOutputCount(4);
 		shaderGeo.load("shadersGL3/vert.glsl", "shadersGL3/frag.glsl", "shadersGL3/geom.glsl");
 	
 		ofEnableDepthTest();
@@ -468,7 +468,48 @@ void ofApp::mouseReleased(int x, int y, int button)
 	{
 		renderer->proportionShape(renderer->xMousePress, renderer->yMousePress, x, y);
 	}
-	
+
+	if (renderer->curveID != Curve::NONE)
+	{
+		if (indexPointCurb == 0)
+		{
+			renderer->selectedCtrlPoint = &renderer->ctrlPoint1;
+			renderer->ctrlPoint1 = { (float)x, (float)y, 0 };
+			indexPointCurb = indexPointCurb + 1;
+		}
+		else if (indexPointCurb == 1)
+		{
+			renderer->selectedCtrlPoint = &renderer->ctrlPoint2;
+			renderer->ctrlPoint2 = { (float)x, (float)y, 0 };
+			indexPointCurb = indexPointCurb + 1;
+		}
+		else if (indexPointCurb == 2)
+		{
+			renderer->selectedCtrlPoint = &renderer->ctrlPoint3;
+			renderer->ctrlPoint3 = { (float)x, (float)y, 0 };
+			indexPointCurb = indexPointCurb + 1;
+		}
+		else if (indexPointCurb == 3)
+		{
+			renderer->selectedCtrlPoint = &renderer->ctrlPoint4;
+			renderer->ctrlPoint4 = { (float)x, (float)y, 0 };
+			if (renderer->curveID == Curve::SPLINE)
+			{
+				indexPointCurb = 4;
+			}
+			else
+			{
+				indexPointCurb = 0;
+			}
+		}
+		else if (indexPointCurb == 4)
+		{
+			renderer->selectedCtrlPoint = &renderer->ctrlPoint5;
+			renderer->ctrlPoint5 = { (float)x, (float)y, 0 };
+			indexPointCurb = 0;
+		}
+	}
+
 	ofLog() << "<app::mouse released at: (" << x << ", " << y << ")>";
 }
 
