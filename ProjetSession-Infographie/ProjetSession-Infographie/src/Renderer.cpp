@@ -175,11 +175,7 @@ void Renderer::draw()
 			if (shaderMode)
 			{
 				shaderColor.begin();
-
-			
 			}
-
-
 
 			ofSetRectMode(OF_RECTMODE_CORNER);
 			ofTranslate(shape[index].position1[0], 0, 0);
@@ -195,8 +191,6 @@ void Renderer::draw()
 			if (shaderMode)
 			{
 				shaderColor.end();
-
-
 			}
 
 			ofPopMatrix();
