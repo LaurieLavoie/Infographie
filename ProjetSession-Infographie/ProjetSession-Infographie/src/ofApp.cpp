@@ -12,6 +12,7 @@ void ofApp::setup()
 	isKeyPressLeft = false;
 	isKeyPressRight = false;
 */
+	
 	indexPointCurb = 0;
 
 #ifdef TARGET_OPENGLES
@@ -26,9 +27,6 @@ void ofApp::setup()
 		ofSetVerticalSync(false);
 		ofEnableAlphaBlending();
 		shader.load("shadersGL2/shader");
-		//shaderGeo.setGeometryInputType(GL_LINE);
-		//shaderGeo.setGeometryOutputType(GL_TRIANGLE_STRIP);
-		//shaderGeo.setGeometryOutputCount(4);
 		shaderGeo.load("shadersGL3/vert.glsl", "shadersGL3/frag.glsl", "shadersGL3/geom.glsl");
 	
 		ofEnableDepthTest();

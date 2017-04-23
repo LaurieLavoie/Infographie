@@ -117,6 +117,7 @@ void Renderer::draw()
 			yMousePress,
 			xMouseCurrent,
 			yMouseCurrent);
+		ofFill();
 	}
 
 	ofColor c = ofColor(0);
@@ -139,16 +140,11 @@ void Renderer::draw()
 			{
 				shaderGeo.begin();
 
-				// set thickness of ribbons
 				shaderGeo.setUniform1f("thickness", 20);
-
-				// make light direction slowly rotate
 				shaderGeo.setUniform3f("lightDir", sin(ofGetElapsedTimef() / 10), cos(ofGetElapsedTimef() / 10), 0);
 			}
 				
 			
-
-				ofNoFill();
 				ofSetLineWidth(shape[index].strokeWidth);
 				c.setHsb(shape[index].fillColor[0], shape[index].fillColor[1], shape[index].fillColor[2]);
 				ofSetColor(c);
@@ -470,7 +466,7 @@ void Renderer::drawCursor(float x, float y) const
 		ofDrawCircle(position, 7);
 		ofDrawCircle(position, 3);
 		ofDrawRectangle(x + 4, y - 12, 10, 7);
-
+		ofFill();
 	}
 }
 
