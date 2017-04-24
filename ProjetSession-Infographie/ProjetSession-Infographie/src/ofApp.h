@@ -90,6 +90,17 @@ class ofApp : public ofBaseApp{
 		ofxButton modelShowPrimitivesButton;
 		ofxAssimpModelLoader * objModel;
 
+		ofxPanel lightsGui;
+		ofxButton pointButton;
+		ofxButton spotButton;
+		ofxButton directionalButton;
+		ofxButton ambientButton;
+		void pointLightListener();
+		void spotLightListener();
+		void directionalLightListener();
+		void ambientLightListener();
+
+
 		ofxPanel curbGui;
 		ofxButton hermiteButton;
 		ofxButton bezierButton;

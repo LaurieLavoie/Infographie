@@ -100,6 +100,17 @@ void ofApp::setup()
 	curbGui.add(voronoiButton.setup("Voronoi diagram"));
 	voronoiButton.addListener(this, &ofApp::voronoiListener);
 
+	lightsGui.setup();
+	lightsGui.setPosition(810, 10);
+	lightsGui.add(pointButton.setup("Point light"));
+	pointButton.addListener(this, &ofApp::pointLightListener);
+	lightsGui.add(spotButton.setup("Spot light"));
+	spotButton.addListener(this, &ofApp::spotLightListener);
+	lightsGui.add(directionalButton.setup("Directional light"));
+	directionalButton.addListener(this, &ofApp::directionalLightListener);
+	lightsGui.add(ambientButton.setup("Ambient light"));
+	ambientButton.addListener(this, &ofApp::ambientLightListener);
+
 	renderer = new Renderer(shader, shaderGeo);
 	renderer->setup();
 
@@ -151,12 +162,52 @@ void ofApp::setup()
 	material.setAmbientColor({ 255.0f, 255.0f, 255.0f });
 	material.setDiffuseColor({ 255.0f, 255.0f, 255.0f });
 	material.setSpecularColor({ 255.0f, 255.0f, 255.0f });
-	material.setShininess(120);
+	material.setShininess(0.0f);
 }
 
 void ofApp::update()
 {
 
+}
+
+void ofApp::pointLightListener()
+{
+	if (point.getIsEnabled()) {
+		point.disable();
+	}
+	else {
+		point.enable();
+	}
+}
+
+void ofApp::spotLightListener()
+{
+	if (spot.getIsEnabled()) {
+		spot.disable();
+	}
+	else {
+		spot.enable();
+	}
+}
+
+void ofApp::directionalLightListener()
+{
+	if (directional.getIsEnabled()) {
+		directional.disable();
+	}
+	else {
+		directional.enable();
+	}
+}
+
+void ofApp::ambientLightListener()
+{
+	if (ambient.getIsEnabled()) {
+		ambient.disable();
+	}
+	else {
+		ambient.enable();
+	}
 }
 
 void ofApp::hermiteListener() {
@@ -385,6 +436,7 @@ void ofApp::draw()
 	cameraGui.draw();
 	modelGui.draw();
 	curbGui.draw();
+	lightsGui.draw();
 }
 
 void ofApp::mouseMoved(int x, int y)
