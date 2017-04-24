@@ -99,7 +99,12 @@ class ofApp : public ofBaseApp{
 		void spotLightListener();
 		void directionalLightListener();
 		void ambientLightListener();
-
+		ofxButton matButton;
+		ofxButton mat1Button;
+		ofxButton mat2Button;
+		void materialListener();
+		void material1Listener();
+		void material2Listener();
 
 		ofxPanel curbGui;
 		ofxButton hermiteButton;
@@ -113,6 +118,10 @@ class ofApp : public ofBaseApp{
 		int indexPointCurb;
 
 		ofMaterial material;
+		ofMaterial material1;
+		ofMaterial material2;
+		ofMaterial* activeMaterial;
+
 		ofLight ambient;
 		ofLight point;
 		ofLight spot;

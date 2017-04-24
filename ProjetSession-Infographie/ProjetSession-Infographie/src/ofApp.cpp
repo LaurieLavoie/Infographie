@@ -110,6 +110,14 @@ void ofApp::setup()
 	directionalButton.addListener(this, &ofApp::directionalLightListener);
 	lightsGui.add(ambientButton.setup("Ambient light"));
 	ambientButton.addListener(this, &ofApp::ambientLightListener);
+	//
+	lightsGui.add(matButton.setup("Material 0"));
+	matButton.addListener(this, &ofApp::materialListener);
+	lightsGui.add(mat1Button.setup("Material 1"));
+	mat1Button.addListener(this, &ofApp::material1Listener);
+	lightsGui.add(mat2Button.setup("Material 2"));
+	mat2Button.addListener(this, &ofApp::material2Listener);
+
 
 	renderer = new Renderer(shader, shaderGeo);
 	renderer->setup();
@@ -127,20 +135,20 @@ void ofApp::setup()
 
 	point.enable();
 	point.setPointLight();
-	point.setDiffuseColor({ 255.0f, 0.0f, 0.0f });
-	point.setSpecularColor({ 255.0f, 0.0f, 0.0f });
+	point.setDiffuseColor({ 255.0f, 235.0f, 240.0f });
+	point.setSpecularColor({ 255.0f, 240.0f, 235.0f });
 	point.setAmbientColor({ 255.0f, 255.0f, 255.0f });
 
 	spot.enable();
 	spot.setSpotlight();
-	spot.setDiffuseColor({ 0.0f, 255.0f, 0.0f });
-	spot.setSpecularColor({ 0.0f, 255.0f, 0.0f });
+	spot.setDiffuseColor({ 200.0f, 255.0f, 185.0f });
+	spot.setSpecularColor({ 200.0f, 255.0f, 185.0f });
 	spot.setAmbientColor({ 255.0f, 255.0f, 255.0f });
 
 	directional.enable();
 	directional.setDirectional();
-	directional.setDiffuseColor({ 0.0f, 0.0f, 255.0f });
-	directional.setSpecularColor({ 0.0f, 0.0f, 255.0f });
+	directional.setDiffuseColor({ 255.0f, 255.0f, 255.0f });
+	directional.setSpecularColor({ 255.0f, 255.0f, 255.0f });
 	directional.setAmbientColor({ 255.0f, 255.0f, 255.0f });
 	directional.setOrientation(ofVec3f{ 0.0f, -1.0f, 1.0f }.normalized());
 
@@ -158,11 +166,23 @@ void ofApp::setup()
 	scene->mainCamera.boom(50.0f);
 
 	scene->mainCamera.setOrbitRadius(700.0f);
-	
+
 	material.setAmbientColor({ 255.0f, 255.0f, 255.0f });
 	material.setDiffuseColor({ 255.0f, 255.0f, 255.0f });
 	material.setSpecularColor({ 255.0f, 255.0f, 255.0f });
 	material.setShininess(0.0f);
+
+	material1.setAmbientColor({ 127.0f, 127.0f, 255.0f });
+	material1.setDiffuseColor({ 0.0f, 0.0f, 255.0f });
+	material1.setSpecularColor({ 255.0f, 55.0f, 0.0f });
+	material1.setShininess(0.5f);
+
+	material2.setAmbientColor({ 255.0f, 255.0f, 255.0f });
+	material2.setDiffuseColor({ 55.0f, 55.0f, 55.0f });
+	material2.setSpecularColor({ 255.0f, 55.0f, 255.0f });
+	material2.setShininess(0.25f);
+
+	activeMaterial = &material;
 }
 
 void ofApp::update()
@@ -208,6 +228,21 @@ void ofApp::ambientLightListener()
 	else {
 		ambient.enable();
 	}
+}
+
+void ofApp::materialListener()
+{
+	activeMaterial = &material;
+}
+
+void ofApp::material1Listener()
+{
+	activeMaterial = &material1;
+}
+
+void ofApp::material2Listener()
+{
+	activeMaterial = &material2;
 }
 
 void ofApp::hermiteListener() {
@@ -412,12 +447,12 @@ void ofApp::draw()
 		scene->mainCamera.getOfCamera().begin();
 		renderer->image.getTexture().bind();
 		scene->mainCamera.draw();
-		material.begin();
+		activeMaterial->begin();
 		scene->getRoot().draw();
 		if (objModel != nullptr) {
 			objModel->draw(OF_MESH_FILL);
 		}
-		material.end();
+		activeMaterial->end();
 		ofDisableLighting();
 		renderer->image.getTexture().unbind();
 		ofDisableDepthTest();
